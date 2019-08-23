@@ -1,4 +1,7 @@
 # propro-server
+# Author
+  James陆妙善
+  Nico王瑞敏
 # Java VM Params. 
  - [Optional]   -Xmx10000M 
  - [Required]   -Ddbpath=localhost:27017
