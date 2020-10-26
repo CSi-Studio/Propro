@@ -30,5 +30,5 @@
   "detecting" : true,
   "identifying" : false,
   "quantifying" : true,
-  "_class" : "com.westlake.air.pecs.domain.db.TransitionDO"
+  "_class" : "com.csi.domain.db.TransitionDO"
 }
