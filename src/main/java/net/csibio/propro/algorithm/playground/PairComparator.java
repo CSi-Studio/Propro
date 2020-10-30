@@ -1,15 +1,14 @@
 package net.csibio.propro.algorithm.playground;
 
-import net.csibio.propro.constants.enums.ResultCode;
+import net.csibio.aird.bean.Compressor;
+import net.csibio.aird.bean.MzIntensityPairs;
+import net.csibio.aird.parser.DIAParser;
 import net.csibio.propro.domain.ResultDO;
-import net.csibio.propro.domain.bean.aird.Compressor;
 import net.csibio.propro.domain.db.ExperimentDO;
 import net.csibio.propro.domain.db.SwathIndexDO;
 import net.csibio.propro.service.ExperimentService;
 import net.csibio.propro.service.SwathIndexService;
 import net.csibio.propro.utils.ConvolutionUtil;
-import net.csibio.propro.algorithm.parser.AirdFileParser;
-import net.csibio.propro.domain.bean.analyse.MzIntensityPairs;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -17,7 +16,6 @@ import org.springframework.stereotype.Component;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
-import java.io.RandomAccessFile;
 import java.util.*;
 
 /**
@@ -27,8 +25,6 @@ import java.util.*;
 @Component("pairComparator")
 public class PairComparator {
 
-    @Autowired
-    AirdFileParser airdFileParser;
     @Autowired
     SwathIndexService swathIndexService;
     @Autowired
@@ -51,18 +47,15 @@ public class PairComparator {
         if (checkResult.isFailed()) {
             return checkResult;
         }
-        try {
-            ResultDO<TreeMap<Float, MzIntensityPairs>> resultDO = new ResultDO(true);
-            RandomAccessFile raf = new RandomAccessFile((File) checkResult.getModel(), "r");
-            //Step1.获取窗口信息.
-            SwathIndexDO swathIndexDO = swathIndexService.getSwathIndex(experimentDO.getId(), 700f);
-            System.out.println(swathIndexDO.getRange());
-            TreeMap<Float, MzIntensityPairs> rtMap = airdFileParser.parseSwathBlockValues(raf, swathIndexDO, experimentDO.fetchCompressor(Compressor.TARGET_MZ), experimentDO.fetchCompressor(Compressor.TARGET_INTENSITY));
-            resultDO.setModel(rtMap);
-            return resultDO;
-        } catch (Exception e) {
-            return ResultDO.buildError(ResultCode.FILE_FORMAT_NOT_SUPPORTED);
-        }
+
+        ResultDO<TreeMap<Float, MzIntensityPairs>> resultDO = new ResultDO(true);
+        Compressor mzCompressor = experimentDO.fetchCompressor(Compressor.TARGET_MZ);
+        DIAParser parser = new DIAParser(experimentDO.getAirdPath(), mzCompressor, experimentDO.fetchCompressor(Compressor.TARGET_INTENSITY), mzCompressor.getPrecision());
+        //Step1.获取窗口信息.
+        SwathIndexDO swathIndexDO = swathIndexService.getSwathIndex(experimentDO.getId(), 700f);
+        TreeMap<Float, MzIntensityPairs> rtMap = (TreeMap<Float, MzIntensityPairs>) parser.getSpectrums(swathIndexDO.getStartPtr(), swathIndexDO.getEndPtr(), swathIndexDO.getRts(), swathIndexDO.getMzs(), swathIndexDO.getInts());
+        resultDO.setModel(rtMap);
+        return resultDO;
     }
 
     /**
@@ -84,23 +77,23 @@ public class PairComparator {
                 continue;
             }
             MzIntensityPairs mzIntensityPairs = entry.getValue();
-            Float[] mzs = mzIntensityPairs.getMzArray();
-            Float[] ints = mzIntensityPairs.getIntensityArray();
+            float[] mzs = mzIntensityPairs.getMzArray();
+            float[] ints = mzIntensityPairs.getIntensityArray();
             float totalInt = 0f;
             float tempNormedMz = (int) (mzs[0] / mzPrecision) * mzPrecision;
             for (int i = 0; i < mzs.length; i++) {
                 Float normedMz = (int) (mzs[i] / mzPrecision) * mzPrecision;
 
-                if (normedMz.equals(tempNormedMz)){
+                if (normedMz.equals(tempNormedMz)) {
                     totalInt += ints[i];
                 } else {
                     Pair<Float, Float> rtIntPair = Pair.of(entry.getKey(), ints[i]);
                     if (mzDurationMap.containsKey(normedMz)) {
                         totalInt += ints[i];
-                        List<Pair<Float,Float>> rtIntList = mzDurationMap.get(normedMz);
-                        Pair<Float,Float> lastPair = rtIntList.get(rtIntList.size() - 1);
-                        if (lastPair.getLeft().equals(entry.getKey())){
-                            lastPair = Pair.of(entry.getKey(), lastPair.getRight()+ints[i]);
+                        List<Pair<Float, Float>> rtIntList = mzDurationMap.get(normedMz);
+                        Pair<Float, Float> lastPair = rtIntList.get(rtIntList.size() - 1);
+                        if (lastPair.getLeft().equals(entry.getKey())) {
+                            lastPair = Pair.of(entry.getKey(), lastPair.getRight() + ints[i]);
                         } else {
                             mzDurationMap.get(normedMz).add(rtIntPair);
                         }
@@ -132,12 +125,12 @@ public class PairComparator {
             bw.write(intList.toString());
             bw.write(";\n");
             bw.close();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void setPeaks(HashSet<Float> mzSet, HashMap<Float, List<Pair<Float, Float>>> mzDurationMap, Float rtDurationLimit, List<Float> rtList, List<Float> mzList, List<Float> intList){
+    private void setPeaks(HashSet<Float> mzSet, HashMap<Float, List<Pair<Float, Float>>> mzDurationMap, Float rtDurationLimit, List<Float> rtList, List<Float> mzList, List<Float> intList) {
 
         for (Float mz : mzSet) {
             List<Pair<Float, Float>> rtIntPairList = mzDurationMap.get(mz);

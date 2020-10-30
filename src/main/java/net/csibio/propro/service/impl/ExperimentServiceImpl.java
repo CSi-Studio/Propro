@@ -1,14 +1,14 @@
 package net.csibio.propro.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
-import net.csibio.propro.algorithm.parser.AirdFileParser;
+import net.csibio.aird.bean.AirdInfo;
+import net.csibio.aird.bean.BlockIndex;
 import net.csibio.propro.constants.enums.ResultCode;
 import net.csibio.propro.constants.enums.TaskStatus;
 import net.csibio.propro.dao.ExperimentDAO;
 import net.csibio.propro.dao.ProjectDAO;
 import net.csibio.propro.dao.SwathIndexDAO;
 import net.csibio.propro.domain.ResultDO;
-import net.csibio.propro.domain.bean.aird.AirdInfo;
 import net.csibio.propro.domain.bean.experiment.ExpFileSize;
 import net.csibio.propro.domain.db.ExperimentDO;
 import net.csibio.propro.domain.db.ProjectDO;
@@ -21,11 +21,13 @@ import net.csibio.propro.service.*;
 import net.csibio.propro.utils.FileUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -45,11 +47,8 @@ public class ExperimentServiceImpl implements ExperimentService {
     ProjectDAO projectDAO;
     @Autowired
     SwathIndexDAO swathIndexDAO;
-
     @Autowired
     PeptideService peptideService;
-    @Autowired
-    AirdFileParser airdFileParser;
     @Autowired
     AnalyseDataService analyseDataService;
     @Autowired
@@ -215,17 +214,21 @@ public class ExperimentServiceImpl implements ExperimentService {
             experimentDO.setAirdIndexSize(indexFile.length());
             experimentDO.setWindowRanges(airdInfo.getRangeList());
             experimentDO.setFeatures(airdInfo.getFeatures());
-            experimentDO.setInstrument(airdInfo.getInstrument());
+            experimentDO.setInstruments(airdInfo.getInstruments());
             experimentDO.setCompressors(airdInfo.getCompressors());
             experimentDO.setParentFiles(airdInfo.getParentFiles());
             experimentDO.setSoftwares(airdInfo.getSoftwares());
             experimentDO.setVendorFileSize(airdInfo.getFileSize());
 
-            for (SwathIndexDO swathIndex : airdInfo.getIndexList()) {
+            List<SwathIndexDO> swathIndexList = new ArrayList<>();
+            for (BlockIndex blockIndex : airdInfo.getIndexList()) {
+                SwathIndexDO swathIndex = new SwathIndexDO();
+                BeanUtils.copyProperties(blockIndex, swathIndex);
                 swathIndex.setExpId(experimentDO.getId());
+                swathIndexList.add(swathIndex);
             }
 
-            swathIndexDAO.insert(airdInfo.getIndexList());
+            swathIndexDAO.insert(swathIndexList);
             taskDO.addLog("Swath Index Store Success.索引存储成功");
             taskService.update(taskDO);
 
@@ -261,7 +264,7 @@ public class ExperimentServiceImpl implements ExperimentService {
         List<SwathIndexDO> ms2SwathIndexes = swathIndexDAO.getAll(query);
         HashMap<Float, Float[]> peptideMap = new HashMap<>();
         for (SwathIndexDO swathIndex : ms2SwathIndexes) {
-            float precursorMz = swathIndex.getRange().getMz();
+            float precursorMz = swathIndex.getRange().getMz().floatValue();
             peptideMap.put(precursorMz, new Float[]{swathIndex.getRts().get(0), swathIndex.getRts().get(swathIndex.getRts().size() - 1)});
         }
         return peptideMap;
@@ -271,7 +274,7 @@ public class ExperimentServiceImpl implements ExperimentService {
     public HashMap<Float, Float[]> getPrmRtWindowMap(List<SwathIndexDO> ms2SwathIndexes) {
         HashMap<Float, Float[]> peptideMap = new HashMap<>();
         for (SwathIndexDO swathIndex : ms2SwathIndexes) {
-            float precursorMz = swathIndex.getRange().getMz();
+            float precursorMz = swathIndex.getRange().getMz().floatValue();
             peptideMap.put(precursorMz, new Float[]{swathIndex.getRts().get(0), swathIndex.getRts().get(swathIndex.getRts().size() - 1)});
         }
         return peptideMap;

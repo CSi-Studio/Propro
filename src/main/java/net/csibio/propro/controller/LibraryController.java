@@ -2,7 +2,7 @@ package net.csibio.propro.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import net.csibio.propro.domain.bean.aird.WindowRange;
+import net.csibio.aird.bean.WindowRange;
 import net.csibio.propro.domain.db.ExperimentDO;
 import net.csibio.propro.domain.db.LibraryDO;
 import net.csibio.propro.domain.db.PeptideDO;

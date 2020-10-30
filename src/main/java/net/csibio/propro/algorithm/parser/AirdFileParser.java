@@ -1,7 +1,7 @@
 package net.csibio.propro.algorithm.parser;
 
-import net.csibio.propro.domain.bean.aird.Compressor;
-import net.csibio.propro.domain.bean.analyse.MzIntensityPairs;
+import net.csibio.aird.bean.Compressor;
+import net.csibio.aird.bean.MzIntensityPairs;
 import net.csibio.propro.domain.db.SwathIndexDO;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.stereotype.Component;
@@ -74,13 +74,13 @@ public class AirdFileParser extends BaseParser {
             raf.seek(start);
             byte[] reader = new byte[indexDO.getMzs().get(index).intValue()];
             raf.read(reader);
-            Float[] mzArray = getMzValues(reader, mzCompressor);
+            float[] mzArray = getMzValues(reader, mzCompressor);
             start += indexDO.getMzs().get(index).intValue();
             raf.seek(start);
             reader = new byte[indexDO.getInts().get(index).intValue()];
             raf.read(reader);
 
-            Float[] intensityArray = getIntValues(reader, intCompressor);
+            float[] intensityArray = getIntValues(reader, intCompressor);
             return new MzIntensityPairs(mzArray, intensityArray);
         } catch (Exception e) {
             e.printStackTrace();

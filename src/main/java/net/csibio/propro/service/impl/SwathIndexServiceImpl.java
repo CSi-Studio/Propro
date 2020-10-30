@@ -1,13 +1,16 @@
 package net.csibio.propro.service.impl;
 
+import net.csibio.aird.bean.MzIntensityPairs;
 import net.csibio.propro.constants.enums.ResultCode;
 import net.csibio.propro.dao.SwathIndexDAO;
 import net.csibio.propro.domain.ResultDO;
-import net.csibio.propro.domain.bean.analyse.MzIntensityPairs;
 import net.csibio.propro.domain.db.SwathIndexDO;
 import net.csibio.propro.domain.query.SwathIndexQuery;
 import net.csibio.propro.service.SwathIndexService;
+import net.csibio.propro.utils.ArrayUtil;
 import net.csibio.propro.utils.ConvolutionUtil;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,8 +56,7 @@ public class SwathIndexServiceImpl implements SwathIndexService {
 
     @Override
     public MzIntensityPairs getNearestSpectrumByRt(TreeMap<Float, MzIntensityPairs> rtMap, Double rt) {
-        Float[] fArray = new Float[rtMap.keySet().size()];
-        rtMap.keySet().toArray(fArray);
+        float[] fArray = ArrayUtil.toPrimitive(rtMap.keySet());
         int rightIndex = ConvolutionUtil.findRightIndex(fArray, rt.floatValue());
         int finalIndex = rightIndex;
         if (rightIndex == -1) {
@@ -91,16 +93,16 @@ public class SwathIndexServiceImpl implements SwathIndexService {
      * @return
      */
     @Override
-    public List<SwathIndexDO> getLinkedSwathIndex(String expId, Float mz, Float deltaMz, Integer collectedNumber) {
+    public List<SwathIndexDO> getLinkedSwathIndex(String expId, Float mz, Double deltaMz, Integer collectedNumber) {
         List<SwathIndexDO> swathList = new ArrayList<>();
         SwathIndexDO index0 = getSwathIndex(expId, mz);
         swathList.add(index0);
         for (int i = 1; i <= collectedNumber; i++) {
-            SwathIndexDO index1 = getSwathIndex(expId, mz - deltaMz * i);
+            SwathIndexDO index1 = getSwathIndex(expId, (float)(mz - deltaMz * i));
             if (index1 != null) {
                 swathList.add(index1);
             }
-            SwathIndexDO index2 = getSwathIndex(expId, mz + deltaMz * i);
+            SwathIndexDO index2 = getSwathIndex(expId, (float)(mz + deltaMz * i));
             if (index2 != null) {
                 swathList.add(index2);
             }

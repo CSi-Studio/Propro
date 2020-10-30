@@ -1,7 +1,7 @@
 package net.csibio.propro.domain.db;
 
-import net.csibio.propro.domain.bean.aird.WindowRange;
 import lombok.Data;
+import net.csibio.aird.bean.WindowRange;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;

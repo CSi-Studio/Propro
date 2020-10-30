@@ -1,6 +1,6 @@
 package net.csibio.propro.service.impl;
 
-import net.csibio.propro.domain.bean.aird.WindowRange;
+import net.csibio.aird.bean.WindowRange;
 import net.csibio.propro.domain.bean.score.SlopeIntercept;
 import net.csibio.propro.domain.db.simple.Protein;
 import net.csibio.propro.algorithm.formula.FormulaCalculator;
@@ -234,7 +234,7 @@ public class PeptideServiceImpl implements PeptideService {
 
         long start = System.currentTimeMillis();
         PeptideQuery query = new PeptideQuery(library.getId());
-        float precursorMz = mzRange.getMz();
+        float precursorMz = mzRange.getMz().floatValue();
         switch (params.getType()){
             case PRM:
                 query.setMzStart(precursorMz - 0.0006d);

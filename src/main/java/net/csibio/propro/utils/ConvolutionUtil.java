@@ -1,9 +1,9 @@
 package net.csibio.propro.utils;
 
+import net.csibio.aird.bean.MzIntensityPairs;
 import net.csibio.propro.domain.ResultDO;
 import net.csibio.propro.domain.db.ExperimentDO;
 import net.csibio.propro.constants.enums.ResultCode;
-import net.csibio.propro.domain.bean.analyse.MzIntensityPairs;
 
 import java.io.File;
 
@@ -23,8 +23,8 @@ public class ConvolutionUtil {
      */
     public static float accumulation(MzIntensityPairs pairs, Float mzStart, Float mzEnd) {
 
-        Float[] mzArray = pairs.getMzArray();
-        Float[] intensityArray = pairs.getIntensityArray();
+        float[] mzArray = pairs.getMzArray();
+        float[] intensityArray = pairs.getIntensityArray();
 
         float result = 0f;
         try {
@@ -57,8 +57,8 @@ public class ConvolutionUtil {
      * @return
      */
     public static float adaptiveAccumulation(MzIntensityPairs pairs, Float mz) {
-        Float[] mzArray = pairs.getMzArray();
-        Float[] intensityArray = pairs.getIntensityArray();
+        float[] mzArray = pairs.getMzArray();
+        float[] intensityArray = pairs.getIntensityArray();
         float result = 0f;
         int nearestIndex = PeakUtil.findNearestIndex(mzArray, mz);
         int leftIndex = nearestIndex == 0 ? 0 : nearestIndex - 1;
@@ -114,7 +114,7 @@ public class ConvolutionUtil {
      * @param target
      * @return
      */
-    public static int findRightIndex(Float[] array, Float target) {
+    public static int findRightIndex(float[] array, Float target) {
         int rightIndex = array.length - 1;
 
         if (target <= array[0]) {
@@ -148,7 +148,7 @@ public class ConvolutionUtil {
      * @param target
      * @return
      */
-    public static int findIndex(Float[] array, Float target, boolean isLeftIndex) {
+    public static int findIndex(float[] array, float target, boolean isLeftIndex) {
         if (array == null) {
             return 0;
         }
@@ -186,7 +186,7 @@ public class ConvolutionUtil {
         }
     }
 
-    public static int findIndex(Float[] array, Float target, int leftIndex, int rightIndex, boolean isLeftIndex) {
+    public static int findIndex(float[] array, float target, int leftIndex, int rightIndex, boolean isLeftIndex) {
         if (array == null) {
             return 0;
         }

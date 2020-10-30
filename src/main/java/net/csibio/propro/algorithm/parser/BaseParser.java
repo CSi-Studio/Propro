@@ -1,6 +1,6 @@
 package net.csibio.propro.algorithm.parser;
 
-import net.csibio.propro.domain.bean.aird.Compressor;
+import net.csibio.aird.bean.Compressor;
 import net.csibio.propro.utils.CompressUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +12,7 @@ public abstract class BaseParser {
     public final Logger logger = LoggerFactory.getLogger(BaseParser.class);
 
     //默认从Aird文件中读取,编码Order为LITTLE_ENDIAN,精度为小数点后三位
-    public Float[] getMzValues(byte[] value, Compressor intCompressor) {
+    public float[] getMzValues(byte[] value, Compressor intCompressor) {
         return getMzValues(value, ByteOrder.LITTLE_ENDIAN);
     }
 
@@ -22,7 +22,7 @@ public abstract class BaseParser {
      * @param value
      * @return
      */
-    public Float[] getMzValues(byte[] value, ByteOrder order) {
+    public float[] getMzValues(byte[] value, ByteOrder order) {
         ByteBuffer byteBuffer = ByteBuffer.wrap(CompressUtil.zlibDecompress(value));
         byteBuffer.order(order);
 
@@ -32,7 +32,7 @@ public abstract class BaseParser {
             intValues[i] = ints.get(i);
         }
         intValues = CompressUtil.decompressForSortedInt(intValues);
-        Float[] floatValues = new Float[intValues.length];
+        float[] floatValues = new float[intValues.length];
         for (int index = 0; index < intValues.length; index++) {
             floatValues[index] = (float) intValues[index] / 1000;
         }
@@ -40,7 +40,7 @@ public abstract class BaseParser {
         return floatValues;
     }
 
-    public Float[] getIntValues(byte[] value, Compressor intCompressor) throws Exception {
+    public float[] getIntValues(byte[] value, Compressor intCompressor) throws Exception {
         if (intCompressor.getMethod().contains("log10")) {
             return getLogedIntValues(value, ByteOrder.LITTLE_ENDIAN);
         } else {
@@ -54,13 +54,13 @@ public abstract class BaseParser {
      * @param value
      * @return
      */
-    public Float[] getIntValues(byte[] value, ByteOrder order) throws Exception {
+    public float[] getIntValues(byte[] value, ByteOrder order) throws Exception {
         try {
             ByteBuffer byteBuffer = ByteBuffer.wrap(CompressUtil.zlibDecompress(value));
             byteBuffer.order(order);
 
             FloatBuffer intensities = byteBuffer.asFloatBuffer();
-            Float[] intValues = new Float[intensities.capacity()];
+            float[] intValues = new float[intensities.capacity()];
             for (int i = 0; i < intensities.capacity(); i++) {
                 intValues[i] = intensities.get(i);
             }
@@ -79,13 +79,13 @@ public abstract class BaseParser {
      * @param value
      * @return
      */
-    public Float[] getLogedIntValues(byte[] value, ByteOrder order) throws Exception {
+    public float[] getLogedIntValues(byte[] value, ByteOrder order) throws Exception {
         try {
             ByteBuffer byteBuffer = ByteBuffer.wrap(CompressUtil.zlibDecompress(value));
             byteBuffer.order(order);
 
             FloatBuffer intensities = byteBuffer.asFloatBuffer();
-            Float[] intValues = new Float[intensities.capacity()];
+            float[] intValues = new float[intensities.capacity()];
             for (int i = 0; i < intensities.capacity(); i++) {
                 intValues[i] = (float) Math.pow(10, intensities.get(i));
             }

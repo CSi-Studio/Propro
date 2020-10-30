@@ -1,6 +1,6 @@
 package net.csibio.propro.utils;
 
-import net.csibio.propro.domain.bean.aird.WindowRange;
+import net.csibio.aird.bean.WindowRange;
 import net.csibio.propro.domain.bean.score.FeatureScores;
 import net.csibio.propro.domain.bean.score.SimpleFeatureScores;
 import net.csibio.propro.domain.db.AnalyseOverviewDO;

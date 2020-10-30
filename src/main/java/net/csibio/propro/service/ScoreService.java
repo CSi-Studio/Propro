@@ -1,8 +1,8 @@
 package net.csibio.propro.service;
 
+import net.csibio.aird.bean.MzIntensityPairs;
 import net.csibio.propro.domain.db.AnalyseDataDO;
 import net.csibio.propro.domain.db.simple.SimplePeptide;
-import net.csibio.propro.domain.bean.analyse.MzIntensityPairs;
 import net.csibio.propro.domain.params.WorkflowParams;
 
 import java.util.TreeMap;

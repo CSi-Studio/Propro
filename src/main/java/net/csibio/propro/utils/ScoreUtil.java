@@ -90,7 +90,7 @@ public class ScoreUtil {
      * @param right            right mz
      * @return float mz,intensity boolean signalFound
      */
-    public static IntegrateWindowMzIntensity integrateWindow(Float[] spectrumMzArray, Float[] spectrumIntArray, float left, float right) {
+    public static IntegrateWindowMzIntensity integrateWindow(float[] spectrumMzArray, float[] spectrumIntArray, float left, float right) {
         IntegrateWindowMzIntensity mzIntensity = new IntegrateWindowMzIntensity();
 
         double mz = 0d, intensity = 0d;

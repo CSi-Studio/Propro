@@ -1,11 +1,11 @@
 package net.csibio.propro.service;
 
-import net.csibio.propro.domain.bean.aird.WindowRange;
+import net.csibio.aird.bean.WindowRange;
+import net.csibio.propro.domain.ResultDO;
 import net.csibio.propro.domain.db.LibraryDO;
 import net.csibio.propro.domain.db.PeptideDO;
 import net.csibio.propro.domain.db.simple.Protein;
 import net.csibio.propro.domain.db.simple.SimplePeptide;
-import net.csibio.propro.domain.ResultDO;
 import net.csibio.propro.domain.params.CoordinateBuildingParams;
 import net.csibio.propro.domain.query.PeptideQuery;
 

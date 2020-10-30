@@ -2,6 +2,7 @@ package net.csibio.propro.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import net.csibio.aird.bean.WindowRange;
 import net.csibio.propro.algorithm.extract.Extractor;
 import net.csibio.propro.config.VMProperties;
 import net.csibio.propro.constants.Constants;
@@ -10,7 +11,6 @@ import net.csibio.propro.constants.enums.ResultCode;
 import net.csibio.propro.constants.enums.ScoreType;
 import net.csibio.propro.constants.enums.TaskTemplate;
 import net.csibio.propro.domain.ResultDO;
-import net.csibio.propro.domain.bean.aird.WindowRange;
 import net.csibio.propro.domain.bean.analyse.SigmaSpacing;
 import net.csibio.propro.domain.bean.irt.IrtResult;
 import net.csibio.propro.domain.bean.score.SlopeIntercept;

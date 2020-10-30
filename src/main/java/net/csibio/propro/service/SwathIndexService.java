@@ -1,8 +1,8 @@
 package net.csibio.propro.service;
 
+import net.csibio.aird.bean.MzIntensityPairs;
 import net.csibio.propro.domain.db.SwathIndexDO;
 import net.csibio.propro.domain.ResultDO;
-import net.csibio.propro.domain.bean.analyse.MzIntensityPairs;
 import net.csibio.propro.domain.query.SwathIndexQuery;
 
 import java.util.List;
@@ -24,7 +24,7 @@ public interface SwathIndexService {
 
     SwathIndexDO getSwathIndex(String expId, Float mz);
 
-    List<SwathIndexDO> getLinkedSwathIndex(String expId, Float mz, Float deltaMz, Integer collectedNumber);
+    List<SwathIndexDO> getLinkedSwathIndex(String expId, Float mz, Double deltaMz, Integer collectedNumber);
 
     SwathIndexDO getPrmIndex(String expId, Float mz);
 

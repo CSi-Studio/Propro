@@ -1,12 +1,12 @@
 package net.csibio.propro.controller;
 
 import com.alibaba.fastjson.JSON;
+import net.csibio.aird.bean.WindowRange;
 import net.csibio.propro.algorithm.formula.FragmentFactory;
 import net.csibio.propro.algorithm.parser.LibraryTsvParser;
 import net.csibio.propro.algorithm.playground.PairComparator;
 import net.csibio.propro.constants.Constants;
 import net.csibio.propro.constants.enums.ScoreType;
-import net.csibio.propro.domain.bean.aird.WindowRange;
 import net.csibio.propro.domain.bean.score.FeatureScores;
 import net.csibio.propro.domain.db.*;
 import net.csibio.propro.service.AnalyseDataService;
@@ -152,7 +152,7 @@ public class PatchController extends BaseController{
         List<WindowRange> windowRanges = experimentDO.getWindowRanges();
         List<Float> expMzList = new ArrayList<>();
         for (WindowRange windowRange : windowRanges) {
-            expMzList.add(windowRange.getMz());
+            expMzList.add(windowRange.getMz().floatValue());
         }
 
         /**
@@ -236,7 +236,7 @@ public class PatchController extends BaseController{
             List<WindowRange> windowRanges = experimentDO.getWindowRanges();
             List<Float> expMzList = new ArrayList<>();
             for (WindowRange windowRange : windowRanges) {
-                expMzList.add(windowRange.getMz());
+                expMzList.add(windowRange.getMz().floatValue());
             }
             Collections.sort(expMzList);
             FileInputStream prmFileStream = new FileInputStream(filePath);

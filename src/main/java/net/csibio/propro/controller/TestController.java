@@ -6,7 +6,6 @@ import net.csibio.propro.algorithm.fitter.LinearFitter;
 import net.csibio.propro.algorithm.formula.FragmentFactory;
 import net.csibio.propro.algorithm.learner.SemiSupervise;
 import net.csibio.propro.algorithm.merger.ProjectMerger;
-import net.csibio.propro.algorithm.parser.AirdFileParser;
 import net.csibio.propro.algorithm.parser.MsmsParser;
 import net.csibio.propro.constants.enums.ScoreType;
 import net.csibio.propro.dao.AnalyseDataDAO;
@@ -58,8 +57,6 @@ public class TestController extends BaseController {
     PeptideService peptideService;
     @Autowired
     FragmentFactory fragmentFactory;
-    @Autowired
-    AirdFileParser airdFileParser;
     @Autowired
     ProjectMerger projectMerger;
     @Autowired
@@ -350,8 +347,8 @@ public class TestController extends BaseController {
             String[] mz = file.split("\n")[0].split(",");
             String[] intensity = file.split("\n")[1].split(",");
             assert mz.length == intensity.length;
-            Float[] mzArray = new Float[mz.length];
-            Float[] intArray = new Float[mz.length];
+            float[] mzArray = new float[mz.length];
+            float[] intArray = new float[mz.length];
             for (int i = 0; i < mz.length; i++) {
                 mzArray[i] = Float.parseFloat(mz[i]);
                 intArray[i] = Float.parseFloat(intensity[i]);

@@ -1,13 +1,12 @@
 package net.csibio.propro.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import net.csibio.aird.bean.MzIntensityPairs;
 import net.csibio.propro.algorithm.feature.*;
 import net.csibio.propro.algorithm.fitter.LinearFitter;
-import net.csibio.propro.algorithm.parser.AirdFileParser;
 import net.csibio.propro.algorithm.peak.*;
 import net.csibio.propro.constants.enums.ScoreType;
 import net.csibio.propro.dao.ConfigDAO;
-import net.csibio.propro.domain.bean.analyse.MzIntensityPairs;
 import net.csibio.propro.domain.bean.analyse.SigmaSpacing;
 import net.csibio.propro.domain.bean.score.FeatureScores;
 import net.csibio.propro.domain.bean.score.PeakGroup;
@@ -78,8 +77,6 @@ public class ScoreServiceImpl implements ScoreService {
     @Autowired
     ConfigDAO configDAO;
     @Autowired
-    AirdFileParser airdFileParser;
-    @Autowired
     LinearFitter linearFitter;
     @Autowired
     SwathIndexService swathIndexService;
@@ -147,8 +144,8 @@ public class ScoreServiceImpl implements ScoreService {
             if (input.isUsedDIAScores()) {
                 MzIntensityPairs mzIntensityPairs = swathIndexService.getNearestSpectrumByRt(rtMap, peakGroupFeature.getApexRt());
                 if (mzIntensityPairs != null) {
-                    Float[] spectrumMzArray = mzIntensityPairs.getMzArray();
-                    Float[] spectrumIntArray = mzIntensityPairs.getIntensityArray();
+                    float[] spectrumMzArray = mzIntensityPairs.getMzArray();
+                    float[] spectrumIntArray = mzIntensityPairs.getIntensityArray();
                     if (input.getScoreTypes().contains(ScoreType.IsotopeCorrelationScore.getTypeName()) || input.getScoreTypes().contains(ScoreType.IsotopeOverlapScore.getTypeName())) {
                         diaScorer.calculateDiaIsotopeScores(peakGroupFeature, productMzMap, spectrumMzArray, spectrumIntArray, productChargeMap, featureScores, input.getScoreTypes());
                     }

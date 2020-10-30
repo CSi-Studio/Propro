@@ -17,7 +17,7 @@ public class PeakUtil {
         }
     }
 
-    public static int findNearestIndex(Float[] x, float value){
+    public static int findNearestIndex(float[] x, float value){
         BisectionLowHigh bisectionLowHigh = MathUtil.bisection(x, value);
         if(x[bisectionLowHigh.getHigh()] - value > value - x[bisectionLowHigh.getLow()]){
             return bisectionLowHigh.getLow();

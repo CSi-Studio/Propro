@@ -562,4 +562,20 @@ public class ArrayUtil {
         }
         return tps;
     }
+
+    public static float[] toPrimitive(Set<Float> floatSet){
+        if (floatSet.size() == 0){
+            return new float[0];
+        }
+        float[] fArray = new float[floatSet.size()];
+        int i=0;
+        Iterator<Float> iterator = floatSet.iterator();
+        while(iterator.hasNext()){
+            fArray[i] = iterator.next();
+            i++;
+        }
+
+        return fArray;
+    }
+
 }

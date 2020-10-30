@@ -1,16 +1,16 @@
 package net.csibio.propro.algorithm.irt;
 
+import net.csibio.aird.bean.Compressor;
+import net.csibio.aird.bean.MzIntensityPairs;
+import net.csibio.aird.parser.DIAParser;
 import net.csibio.propro.domain.bean.score.SlopeIntercept;
 import net.csibio.propro.algorithm.extract.Extractor;
 import net.csibio.propro.algorithm.feature.RtNormalizerScorer;
 import net.csibio.propro.algorithm.fitter.LinearFitter;
-import net.csibio.propro.algorithm.parser.AirdFileParser;
 import net.csibio.propro.algorithm.peak.FeatureExtractor;
 import net.csibio.propro.constants.Constants;
 import net.csibio.propro.constants.enums.ResultCode;
 import net.csibio.propro.domain.ResultDO;
-import net.csibio.propro.domain.bean.aird.Compressor;
-import net.csibio.propro.domain.bean.analyse.MzIntensityPairs;
 import net.csibio.propro.domain.bean.analyse.SigmaSpacing;
 import net.csibio.propro.domain.bean.irt.IrtResult;
 import net.csibio.propro.domain.bean.score.PeptideFeature;
@@ -49,8 +49,6 @@ public class Irt {
 
     @Autowired
     PeptideService peptideService;
-    @Autowired
-    AirdFileParser airdFileParser;
     @Autowired
     Extractor extractor;
     @Autowired
@@ -107,9 +105,6 @@ public class Irt {
             return null;
         }
 
-        File file = (File) checkResult.getModel();
-        RandomAccessFile raf = null;
-
         List<AnalyseDataDO> finalList = new ArrayList<>();
 
         SwathIndexQuery query = new SwathIndexQuery(exp.getId(), 2);
@@ -128,56 +123,52 @@ public class Irt {
             step = 1;
         }
         logger.info("Irt Selected Points Count:" + selectPoints + "; Step:" + step);
-        try {
-            raf = new RandomAccessFile(file, "r");
-            for (int i = 0; i < selectPoints; i++) {
-                logger.info("第"+(i+1)+"轮搜索开始");
-                //Step1.按照步长获取SwathList的点位库
-                SwathIndexDO swathIndexDO = swathList.get(i * step);
+        Compressor mzCompressor = exp.fetchCompressor(Compressor.TARGET_MZ);
+        DIAParser parser = new DIAParser(exp.getAirdPath(), mzCompressor, exp.fetchCompressor(Compressor.TARGET_INTENSITY), mzCompressor.getPrecision());
+        for (int i = 0; i < selectPoints; i++) {
+            logger.info("第" + (i + 1) + "轮搜索开始");
+            //Step1.按照步长获取SwathList的点位库
+            SwathIndexDO swathIndexDO = swathList.get(i * step);
 
-                //Step2.获取标准库的目标肽段片段的坐标
-                TreeMap<Float, MzIntensityPairs> rtMap; //key为rt
-                CoordinateBuildingParams params = new CoordinateBuildingParams();
-                params.setSlopeIntercept(SlopeIntercept.create());
-                params.setRtExtractionWindows(-1);
-                params.setType(exp.getType());
-                params.setNoDecoy(true);
+            //Step2.获取标准库的目标肽段片段的坐标
+            TreeMap<Float, MzIntensityPairs> rtMap; //key为rt
+            CoordinateBuildingParams params = new CoordinateBuildingParams();
+            params.setSlopeIntercept(SlopeIntercept.create());
+            params.setRtExtractionWindows(-1);
+            params.setType(exp.getType());
+            params.setNoDecoy(true);
+            params.setLimit(irtParams.getPickedNumbers());
+            //如果使用标准库进行卷积,为了缩短读取数据库的时间,每一轮从数据库中仅读取300个点位进行测试
+            if (library.getType().equals(LibraryDO.TYPE_STANDARD)) {
                 params.setLimit(irtParams.getPickedNumbers());
-                //如果使用标准库进行卷积,为了缩短读取数据库的时间,每一轮从数据库中仅读取300个点位进行测试
-                if (library.getType().equals(LibraryDO.TYPE_STANDARD)){
-                    params.setLimit(irtParams.getPickedNumbers());
-                }
-
-                List<SimplePeptide> coordinates = peptideService.buildCoordinates(library, swathIndexDO.getRange(), params);
-                if (coordinates.size() == 0) {
-                    logger.warn("No iRT Coordinates Found,Rang:" + swathIndexDO.getRange().getStart() + ":" + swathIndexDO.getRange().getEnd());
-                    continue;
-                }
-
-                //Step3.提取指定原始谱图
-                try {
-                    rtMap = airdFileParser.parseSwathBlockValues(raf, swathIndexDO, exp.fetchCompressor(Compressor.TARGET_MZ), exp.fetchCompressor(Compressor.TARGET_INTENSITY));
-                } catch (Exception e) {
-                    logger.error("PrecursorMZStart:" + swathIndexDO.getRange().getStart());
-                    throw e;
-                }
-
-                //Step4.提取数据并且存储数据,如果传入的库是标准库,那么使用采样的方式进行数据提取
-                if (library.getType().equals(LibraryDO.TYPE_IRT)) {
-                    //如果使用的是irt校准库进行校准,那么会检索校准库中的所有数据集
-                    extractor.extractForIrt(finalList, coordinates, rtMap, null, new ExtractParams(mzExtractWindow, -1f));
-                } else {
-                    //如果是使用标准库进行校准的,那么会按照需要选择的总点数进行抽取选择
-                    ExtractParams ep = new ExtractParams(mzExtractWindow, -1f);
-                    ep.setShapeScoreThreshold(irtParams.getShapeScoreThreshold());
-                    extractor.extractForIrtWithLib(finalList, coordinates, rtMap, null, ep);
-                }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            FileUtil.close(raf);
+
+            List<SimplePeptide> coordinates = peptideService.buildCoordinates(library, swathIndexDO.getRange(), params);
+            if (coordinates.size() == 0) {
+                logger.warn("No iRT Coordinates Found,Rang:" + swathIndexDO.getRange().getStart() + ":" + swathIndexDO.getRange().getEnd());
+                continue;
+            }
+
+            //Step3.提取指定原始谱图
+            try {
+                rtMap = (TreeMap<Float, MzIntensityPairs>) parser.getSpectrums(swathIndexDO.getStartPtr(), swathIndexDO.getEndPtr(), swathIndexDO.getRts(), swathIndexDO.getMzs(), swathIndexDO.getInts());
+            } catch (Exception e) {
+                logger.error("PrecursorMZStart:" + swathIndexDO.getRange().getStart());
+                throw e;
+            }
+
+            //Step4.提取数据并且存储数据,如果传入的库是标准库,那么使用采样的方式进行数据提取
+            if (library.getType().equals(LibraryDO.TYPE_IRT)) {
+                //如果使用的是irt校准库进行校准,那么会检索校准库中的所有数据集
+                extractor.extractForIrt(finalList, coordinates, rtMap, null, new ExtractParams(mzExtractWindow, -1f));
+            } else {
+                //如果是使用标准库进行校准的,那么会按照需要选择的总点数进行抽取选择
+                ExtractParams ep = new ExtractParams(mzExtractWindow, -1f);
+                ep.setShapeScoreThreshold(irtParams.getShapeScoreThreshold());
+                extractor.extractForIrtWithLib(finalList, coordinates, rtMap, null, ep);
+            }
         }
+
 
         return finalList;
     }
@@ -302,7 +293,7 @@ public class Irt {
     private void preprocessRtPairs(List<Pair<Double, Double>> rtPairs, double tolerance) {
         try {
             SlopeIntercept initSlopeIntercept = linearFitter.getInitSlopeIntercept(rtPairs);
-            for (int i = rtPairs.size() - 1; i >= 0; i --){
+            for (int i = rtPairs.size() - 1; i >= 0; i--) {
                 double tempError = Math.abs(rtPairs.get(i).getRight() * initSlopeIntercept.getSlope() + initSlopeIntercept.getIntercept() - rtPairs.get(i).getLeft());
                 if (tempError > tolerance) {
                     rtPairs.remove(i);

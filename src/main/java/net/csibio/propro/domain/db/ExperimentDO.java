@@ -1,9 +1,9 @@
 package net.csibio.propro.domain.db;
 
 import lombok.Data;
+import net.csibio.aird.bean.*;
 import net.csibio.propro.constants.SuffixConst;
 import net.csibio.propro.domain.BaseDO;
-import net.csibio.propro.domain.bean.aird.*;
 import net.csibio.propro.domain.bean.irt.IrtResult;
 import net.csibio.propro.utils.RepositoryUtil;
 import org.apache.commons.io.FilenameUtils;
@@ -34,7 +34,7 @@ public class ExperimentDO extends BaseDO {
     String ownerName;
 
     //仪器设备信息
-    Instrument instrument;
+    List<Instrument> instruments;
 
     //处理的软件信息
     List<Software> softwares;
@@ -103,7 +103,7 @@ public class ExperimentDO extends BaseDO {
         return FilenameUtils.concat(FilenameUtils.concat(RepositoryUtil.getRepo(), projectName), name) + SuffixConst.JSON;
     }
 
-    public Float getDeltaMzRange(){
+    public Double getDeltaMzRange(){
         if(windowRanges == null || windowRanges.size() == 1){
             return null;
         }

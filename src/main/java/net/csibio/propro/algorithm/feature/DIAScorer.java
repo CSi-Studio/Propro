@@ -55,7 +55,7 @@ public class DIAScorer {
      * @param normedLibIntMap  unNormalized library intensity(in peptidepeptide)
      * @param scores           scoreForAll for Airus
      */
-    public void calculateDiaMassDiffScore(HashMap<String, Float> productMzArray, Float[] spectrumMzArray, Float[] spectrumIntArray, HashMap<String, Double> normedLibIntMap, FeatureScores scores, List<String> scoreTypes) {
+    public void calculateDiaMassDiffScore(HashMap<String, Float> productMzArray, float[] spectrumMzArray, float[] spectrumIntArray, HashMap<String, Double> normedLibIntMap, FeatureScores scores, List<String> scoreTypes) {
 
         double ppmScore = 0.0d;
         double ppmScoreWeighted = 0.0d;
@@ -95,7 +95,7 @@ public class DIAScorer {
      * @param productChargeMap charge in peptide
      * @param scores           scoreForAll for JProphet
      */
-    public void calculateDiaIsotopeScores(PeakGroup peakGroupFeature, HashMap<String, Float> productMzMap, Float[] spectrumMzArray, Float[] spectrumIntArray, HashMap<String, Integer> productChargeMap, FeatureScores scores, List<String> scoreTypes) {
+    public void calculateDiaIsotopeScores(PeakGroup peakGroupFeature, HashMap<String, Float> productMzMap, float[] spectrumMzArray, float[] spectrumIntArray, HashMap<String, Integer> productChargeMap, FeatureScores scores, List<String> scoreTypes) {
         double isotopeCorr = 0d;
         double isotopeOverlap = 0d;
         int maxIsotope = Constants.DIA_NR_ISOTOPES + 1;
@@ -216,7 +216,7 @@ public class DIAScorer {
      * @param charge
      * @param scores
      */
-    public void calculateBYIonScore(Float[] spectrumMzArray, Float[] spectrumIntArray, HashMap<Integer, String> unimodHashMap, String sequence, int charge, FeatureScores scores, List<String> scoreTypes) {
+    public void calculateBYIonScore(float[] spectrumMzArray, float[] spectrumIntArray, HashMap<Integer, String> unimodHashMap, String sequence, int charge, FeatureScores scores, List<String> scoreTypes) {
 
         //计算理论值
         BYSeries bySeries = fragmentFactory.getBYSeries(unimodHashMap, sequence, charge);
@@ -318,7 +318,7 @@ public class DIAScorer {
      * @param spectrumIntArray intArray of certain spectrum
      * @return scoreForAll of b or y
      */
-    private int getSeriesScore(List<Double> seriesList, Float[] spectrumMzArray, Float[] spectrumIntArray) {
+    private int getSeriesScore(List<Double> seriesList, float[] spectrumMzArray, float[] spectrumIntArray) {
         int seriesScore = 0;
         for (double seriesMz : seriesList) {
             Double left = seriesMz - Constants.DIA_EXTRACT_WINDOW / 2d;

@@ -96,7 +96,7 @@ public class MathUtil {
         return bisectionLowHigh;
     }
 
-    public static BisectionLowHigh bisection(Float[] x, float value) {
+    public static BisectionLowHigh bisection(float[] x, float value) {
         if(x.length ==1){
             return new BisectionLowHigh(0,0);
         }
