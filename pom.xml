@@ -8,7 +8,7 @@
         <version>2.3.4.RELEASE</version>
     </parent>
 
-    <groupId>com.csi.propro</groupId>
+    <groupId>net.csibio.propro</groupId>
     <artifactId>propro</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
