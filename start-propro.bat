@@ -1,2 +1,3 @@
-jre8\bin\java -Xmx10000M -jar -Dspring.config.location=application.properties,classpath:/application.properties propro.jar
+set Xmx=10000M
+jre8\bin\java -Xmx%Xmx% -jar -Dspring.config.location=classpath:/application.properties,application.properties propro.jar
 pause

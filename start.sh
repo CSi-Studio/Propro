@@ -3,10 +3,6 @@ name="propro"
 Xmx=100000M
 Xms=20000M
 pid=${name}".pid"
-dbpath=172.16.55.72:27017
-admin_username=Admin
-admin_password=propro
-dingtalk_robot=https://oapi.dingtalk.com/robot/send?access_token=f2fb029431f174e678106b30c2db5fb0e40e921999386a61031bf864f18beb77
 jarName=`ls | grep -e "^\${name}.*jar$" | sort -r | head -n 1`
 
 #开始方法
