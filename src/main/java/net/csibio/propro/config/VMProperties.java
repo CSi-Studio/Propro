@@ -49,7 +49,7 @@ public class VMProperties {
 
     public String getAdminUsername() {
         if (StringUtils.isEmpty(adminUsername)) {
-            adminUsername = "Admin";
+            adminUsername = "admin";
         }
         return adminUsername;
     }
@@ -60,7 +60,7 @@ public class VMProperties {
 
     public String getAdminPassword() {
         if (StringUtils.isEmpty(adminPassword)) {
-            adminPassword = "propro";
+            adminPassword = "admin";
         }
         return adminPassword;
     }
