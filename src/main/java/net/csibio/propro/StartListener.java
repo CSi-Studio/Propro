@@ -32,6 +32,5 @@ public class StartListener implements ApplicationListener<ContextRefreshedEvent>
             userDO.setRoles(roles);
             userService.register(userDO);
         }
-        System.out.println(vmProperties);
     }
 }

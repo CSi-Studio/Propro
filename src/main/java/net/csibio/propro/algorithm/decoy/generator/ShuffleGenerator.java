@@ -98,7 +98,13 @@ public class ShuffleGenerator extends BaseGenerator {
             decoyFi.setAnnotations(targetFi.getAnnotation().toAnnoInfo());
             Annotation oneAnno = targetFi.getAnnotation();
             List<String> unimodIds = new ArrayList<>();
-            List<AminoAcid> acids = fragmentFactory.getFragmentSequence(bestDecoy, oneAnno.getType(), oneAnno.getLocation());
+            List<AminoAcid> acids = null;
+            try{
+                acids = fragmentFactory.getFragmentSequence(bestDecoy, oneAnno.getType(), oneAnno.getLocation());
+            }catch (Exception e){
+                e.printStackTrace();
+                System.out.println(bestDecoy);
+            }
             for (AminoAcid aminoAcid : acids) {
                 if (aminoAcid.getModId() != null) {
                     unimodIds.add(aminoAcid.getModId());

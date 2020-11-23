@@ -70,6 +70,7 @@ public class LibraryDAO extends BaseDAO<LibraryDO, LibraryQuery> {
         Document fieldsDoc = new Document();
         fieldsDoc.put("id", true);
         fieldsDoc.put("name", true);
+        fieldsDoc.put("filePath", true);
         Query query = new BasicQuery(queryDoc, fieldsDoc);
         return mongoTemplate.find(query, LibraryDO.class, CollectionName);
     }

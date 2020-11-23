@@ -195,9 +195,10 @@ public class LibraryServiceImpl implements LibraryService {
                 prmPeptideRefMap = prmResultDO.getModel();
             } catch (Exception e) {
                 e.printStackTrace();
+            } finally {
+                FileUtil.close(prmFileStream);
             }
         }
-
 
         if (fileName.toLowerCase().endsWith("tsv") || fileName.toLowerCase().endsWith("csv")) {
             if (prmPeptideRefMap.isEmpty()) {
@@ -220,6 +221,8 @@ public class LibraryServiceImpl implements LibraryService {
         } else {
             return ResultDO.buildError(ResultCode.INPUT_FILE_TYPE_MUST_BE_TSV_OR_TRAML);
         }
+
+        FileUtil.close(libFileStream);
         library.setGenerator(ShuffleGenerator.NAME);
         return resultDO;
     }

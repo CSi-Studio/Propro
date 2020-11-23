@@ -217,7 +217,7 @@ public class LibraryTsvParser extends BaseLibraryParser {
             if (transitionGroupId.length > 2) {
                 peptideDO.setFullName(transitionGroupId[1]);
             } else {
-                System.out.println("fullName exception:" + row[columnMap.get(TransitionGroupId)]);
+                peptideDO.setFullName(transitionGroupId[0]);
             }
         }
         peptideDO.setSequence(PeptideUtil.removeUnimod(peptideDO.getFullName()));
