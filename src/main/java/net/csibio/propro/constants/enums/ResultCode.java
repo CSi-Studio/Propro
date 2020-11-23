@@ -37,6 +37,7 @@ public enum ResultCode implements Serializable {
     LINE_IS_EMPTY("LINE_IS_EMPTY", "内容为空"),
     EXTRACT_FAILED("EXTRACT_FAILED", "解压缩失败"),
     UNAUTHORIZED_ACCESS("UNAUTHORIZED_ACCESS", "未经授权的非法访问"),
+    OPERATING_SUCCESS("OPERATING_SUCCESS", "操作成功"),
 
     /**
      * ******

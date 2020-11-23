@@ -13,42 +13,6 @@
                 <div class="col-md-12 col-lg-6 col-xl-3">
                     <div class="m-widget24">
                         <div class="m-widget24__item">
-                            <a th:href="@{/library/listPublic}"><h2 class="m-widget24__title m--font-success" th:text="#{label_public_library}"></h2></a>
-                            <br>
-                            <span class="m-widget24__desc">standard libraries</span>
-                            <span class="m-widget24__stats m--font-info" th:text="${publicLibCount}"></span>
-                            <div class="m--space-5"></div>
-                            <div class="m-widget2" style="padding-left: 15px; padding-bottom: 5px;">
-                                <a th:href="@{/library/listPublic}" data-toggle="m-tooltip"
-                                   th:title="#{menu_library_list}"
-                                   class="btn btn-success m-btn m-btn--icon m-btn--icon-only">
-                                    <i class="fa fa-list"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-12 col-lg-6 col-xl-3">
-                    <div class="m-widget24">
-                        <div class="m-widget24__item">
-                            <a th:href="@{/library/listPublicIrt}"><h2 class="m-widget24__title m--font-success" th:text="#{label_public_irt_library}"></h2></a>
-                            <br>
-                            <span class="m-widget24__desc">standard libraries</span>
-                            <span class="m-widget24__stats m--font-info" th:text="${publicIrtCount}"></span>
-                            <div class="m--space-5"></div>
-                            <div class="m-widget2" style="padding-left: 15px; padding-bottom: 5px;">
-                                <a th:href="@{/library/listPublicIrt}" data-toggle="m-tooltip"
-                                   th:title="#{menu_library_list}"
-                                   class="btn btn-success m-btn m-btn--icon m-btn--icon-only">
-                                    <i class="fa fa-list"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-12 col-lg-6 col-xl-3">
-                    <div class="m-widget24">
-                        <div class="m-widget24__item">
                             <a th:href="@{/library/list}"><h2 class="m-widget24__title" th:text="#{label_library}"></h2></a>
                             <br>
                             <span class="m-widget24__desc">standard libraries</span>
@@ -60,6 +24,11 @@
                                    class="btn btn-brand m-btn m-btn--icon m-btn--icon-only">
                                     <i class="fa fa-plus"></i>
                                 </a>
+                                <a th:href="@{/library/scan}" data-toggle="m-tooltip"
+                                   th:title="#{label_scan_library_from_local}"
+                                   class="btn btn-accent m-btn m-btn--icon m-btn--icon-only">
+                                    <i class="fa fa-refresh"></i>
+                                </a>
                                 <a th:href="@{/library/list}" data-toggle="m-tooltip"
                                    th:title="#{menu_library_list}"
                                    class="btn btn-success m-btn m-btn--icon m-btn--icon-only">
@@ -69,35 +38,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-12 col-lg-6 col-xl-3">
-                    <div class="m-widget24">
-                        <div class="m-widget24__item">
-                            <a th:href="@{/library/listIrt}"><h2 class="m-widget24__title" th:text="#{label_irt_library}"></h2></a>
-                            <br>
-                            <span class="m-widget24__desc">irt libraries</span>
-                            <span class="m-widget24__stats m--font-info" th:text="${libIrtCount}"></span>
-                            <div class="m--space-5"></div>
-                            <div class="m-widget2" style="padding-left: 15px; padding-bottom: 5px;">
-                                <a th:href="@{/library/create}" data-toggle="m-tooltip"
-                                   th:title="#{label_create_irt_library}"
-                                   class="btn btn-brand m-btn m-btn--icon m-btn--icon-only">
-                                    <i class="fa fa-plus"></i>
-                                </a>
-                                <a th:href="@{/library/listIrt}" data-toggle="m-tooltip"
-                                   th:title="#{menu_irt_library_list}"
-                                   class="btn btn-success m-btn m-btn--icon m-btn--icon-only">
-                                    <i class="fa fa-list"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="m-portlet">
-        <div class="m-portlet__body m-portlet__body--no-padding">
-            <div class="row m-row--no-padding m-row--col-separator-xl">
                 <div class="col-md-12 col-lg-6 col-xl-3">
                     <div class="m-widget24">
                         <div class="m-widget24__item">
@@ -112,6 +52,11 @@
                                    class="btn btn-brand m-btn m-btn--icon m-btn--icon-only">
                                     <i class="fa fa-plus"></i>
                                 </a>
+                                <a th:href="@{/project/scan}" data-toggle="m-tooltip"
+                                   th:title="#{label_scan_project_from_local}"
+                                   class="btn btn-accent m-btn m-btn--icon m-btn--icon-only">
+                                    <i class="fa fa-refresh"></i>
+                                </a>
                                 <a th:href="@{/project/list}" data-toggle="m-tooltip"
                                    th:title="#{label_project_list}"
                                    class="btn btn-success m-btn m-btn--icon m-btn--icon-only">
@@ -122,78 +67,6 @@
                     </div>
                 </div>
                 <div class="col-md-12 col-lg-6 col-xl-3">
-                    <div class="m-widget24">
-                        <div class="m-widget24__item">
-                            <a th:href="@{/experiment/list?type=DIA_SWATH}"><h2 class="m-widget24__title">DIA/SWATH</h2></a>
-                            <br>
-                            <span class="m-widget24__desc">DIA/SWATH type experiments</span>
-                            <span class="m-widget24__stats m--font-brand" th:text="${expSWATHCount}"></span>
-                            <div class="m--space-5"></div>
-                            <div class="m-widget2" style="padding-left: 15px; padding-bottom: 5px;">
-                                <a th:href="@{/experiment/create}" data-toggle="m-tooltip"
-                                   th:title="#{label_add_exp}"
-                                   class="btn btn-brand m-btn m-btn--icon m-btn--icon-only">
-                                    <i class="fa fa-plus"></i>
-                                </a>
-                                <a th:href="@{/experiment/list?type=DIA_SWATH}" data-toggle="m-tooltip"
-                                   th:title="#{label_exp_list}"
-                                   class="btn btn-success m-btn m-btn--icon m-btn--icon-only">
-                                    <i class="fa fa-list"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-12 col-lg-6 col-xl-3">
-                    <div class="m-widget24">
-                        <div class="m-widget24__item">
-                            <a th:href="@{/experiment/list?type=PRM}"><h2 class="m-widget24__title">PRM</h2></a>
-                            <br>
-                            <span class="m-widget24__desc">PRM type experiments</span>
-                            <span class="m-widget24__stats m--font-brand" th:text="${expPRMCount}"></span>
-                            <div class="m--space-5"></div>
-                            <div class="m-widget2" style="padding-left: 15px; padding-bottom: 5px;">
-                                <a th:href="@{/experiment/create}" data-toggle="m-tooltip"
-                                   th:title="#{label_add_exp}"
-                                   class="btn btn-brand m-btn m-btn--icon m-btn--icon-only">
-                                    <i class="fa fa-plus"></i>
-                                </a>
-                                <a th:href="@{/experiment/list?type=PRM}" data-toggle="m-tooltip"
-                                   th:title="#{label_exp_list}"
-                                   class="btn btn-success m-btn m-btn--icon m-btn--icon-only">
-                                    <i class="fa fa-list"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-12 col-lg-6 col-xl-3">
-                    <div class="m-widget24">
-                        <div class="m-widget24__item">
-                            <a th:href="@{/analyse/overview/list}"><h2 class="m-widget24__title" th:text="#{label_analyse_overview}"></h2></a>
-                            <br>
-                            <span class="m-widget24__desc">analysis results after extracting</span>
-                            <span class="m-widget24__stats m--font-brand" th:text="${overviewCount}"></span>
-                            <div class="m--space-5"></div>
-                            <div class="m-widget2" style="padding-left: 15px; padding-bottom: 5px;">
-                                <a th:href="@{/analyse/overview/list}" data-toggle="m-tooltip"
-                                   th:title="#{menu_analyse_overview_list}"
-                                   class="btn btn-success m-btn m-btn--icon m-btn--icon-only">
-                                    <i class="fa fa-list"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="m-portlet">
-        <div class="m-portlet__body m-portlet__body--no-padding">
-            <div class="row m-row--no-padding m-row--col-separator-xl">
-
-                <div class="col-md-12 col-lg-6 col-xl-3">
-                    <!--begin::New Users-->
                     <div class="m-widget24">
                         <div class="m-widget24__item">
                             <h2 class="m-widget24__title" th:text="#{label_task}"></h2>
@@ -210,14 +83,28 @@
                             </div>
                         </div>
                     </div>
-                    <!--end::New Users-->
                 </div>
                 <div class="col-md-12 col-lg-6 col-xl-3">
+                    <div class="m-widget24">
+                        <div class="m-widget24__item">
+                            <h2 class="m-widget24__title" th:text="#{menu_tools}"></h2>
+                            <br>
+                            <span class="m-widget24__desc">Tools for proteomics</span>
+                            <span class="m-widget24__stats m--font-success" th:text="3"></span>
+                            <div class="m--space-5"></div>
+                            <div class="m-widget2" style="padding-left: 15px; padding-bottom: 5px;">
+                                <a th:href="@{/task/list}" data-toggle="m-tooltip"
+                                   th:title="#{task_list}"
+                                   class="btn btn-success m-btn m-btn--icon m-btn--icon-only">
+                                    <i class="fa fa-list"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-
     <!--End::Section-->
 </div>
 <th:block layout:fragment="script">

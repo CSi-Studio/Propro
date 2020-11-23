@@ -8,6 +8,7 @@ import net.csibio.propro.domain.db.LibraryDO;
 import net.csibio.propro.domain.db.PeptideDO;
 import net.csibio.propro.domain.db.TaskDO;
 import net.csibio.propro.service.TaskService;
+import net.csibio.propro.utils.FileUtil;
 import net.csibio.propro.utils.PeptideUtil;
 import net.csibio.propro.algorithm.decoy.generator.ShuffleGenerator;
 import org.apache.commons.lang3.StringUtils;
@@ -84,7 +85,7 @@ public class LibraryTsvParser extends BaseLibraryParser {
             while ((line = reader.readLine()) != null) {
                 ResultDO<PeptideDO> resultDO = parseTransition(line, columnMap, library);
                 if (resultDO.isFailed()) {
-                    if(!resultDO.getMsgCode().equals(ResultCode.NO_DECOY.getCode())){
+                    if (!resultDO.getMsgCode().equals(ResultCode.NO_DECOY.getCode())) {
                         tranResult.addErrorMsg(resultDO.getMsgInfo());
                     }
                     continue;
@@ -140,7 +141,7 @@ public class LibraryTsvParser extends BaseLibraryParser {
                 }
                 ResultDO<PeptideDO> resultDO = parseTransition(line, columnMap, library);
                 if (resultDO.isFailed()) {
-                    if(!resultDO.getMsgCode().equals(ResultCode.NO_DECOY.getCode())){
+                    if (!resultDO.getMsgCode().equals(ResultCode.NO_DECOY.getCode())) {
                         tranResult.addErrorMsg(resultDO.getMsgInfo());
                     }
                     continue;
@@ -189,7 +190,7 @@ public class LibraryTsvParser extends BaseLibraryParser {
         String[] row = StringUtils.splitByWholeSeparator(line, "\t");
         PeptideDO peptideDO = new PeptideDO();
         boolean isDecoy = !row[columnMap.get(IsDecoy)].equals("0");
-        if(isDecoy){
+        if (isDecoy) {
             return ResultDO.buildError(ResultCode.NO_DECOY);
         }
         FragmentInfo fi = new FragmentInfo();
@@ -213,7 +214,11 @@ public class LibraryTsvParser extends BaseLibraryParser {
         if (fullName == null) {
             logger.info("Full Peptide Name cannot be empty");
         } else {
-            peptideDO.setFullName(transitionGroupId[1]);
+            if (transitionGroupId.length > 2) {
+                peptideDO.setFullName(transitionGroupId[1]);
+            } else {
+                System.out.println("fullName exception:" + row[columnMap.get(TransitionGroupId)]);
+            }
         }
         peptideDO.setSequence(PeptideUtil.removeUnimod(peptideDO.getFullName()));
         try {
@@ -296,6 +301,8 @@ public class LibraryTsvParser extends BaseLibraryParser {
         } catch (Exception e) {
             e.printStackTrace();
             return ResultDO.buildError(ResultCode.PRM_FILE_FORMAT_NOT_SUPPORTED);
+        } finally {
+            FileUtil.close(in);
         }
     }
 

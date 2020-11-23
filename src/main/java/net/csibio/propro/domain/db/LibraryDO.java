@@ -40,6 +40,8 @@ public class LibraryDO extends BaseDO {
     @Indexed(unique = true)
     String name;
 
+    String filePath;
+
     /**
      * 0:标准库,1:iRT校准库
      * @see Constants
@@ -72,6 +74,15 @@ public class LibraryDO extends BaseDO {
 
     Date lastModifiedDate;
 
+    public LibraryDO(){}
+    public LibraryDO(String libraryName, Integer libraryType){
+        this.name = libraryName;
+        this.type = libraryType;
+    }
 
-
+    public LibraryDO(String libraryName, Integer libraryType, String creator){
+        this.name = libraryName;
+        this.type = libraryType;
+        this.creator = creator;
+    }
 }

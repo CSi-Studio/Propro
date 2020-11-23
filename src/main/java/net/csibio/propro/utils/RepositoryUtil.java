@@ -14,6 +14,14 @@ public class RepositoryUtil {
         return FilenameUtils.concat(repository, projectName);
     }
 
+    public static String getLibraryRepo(){
+        return FilenameUtils.concat(FilenameUtils.concat(repository, "Library"), "Standard");
+    }
+
+    public static String getIrtLibraryRepo(){
+        return FilenameUtils.concat(FilenameUtils.concat(repository, "Library"), "Irt");
+    }
+
     public static String getProjectTempRepo(String projectName){
         return FilenameUtils.concat(getProjectRepo(projectName), "temp");
     }

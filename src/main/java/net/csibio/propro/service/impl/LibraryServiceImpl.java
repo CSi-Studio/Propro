@@ -2,8 +2,11 @@ package net.csibio.propro.service.impl;
 
 import net.csibio.propro.algorithm.decoy.generator.ShuffleGenerator;
 import net.csibio.propro.algorithm.parser.*;
+import net.csibio.propro.async.task.LibraryTask;
+import net.csibio.propro.config.VMProperties;
 import net.csibio.propro.constants.enums.ResultCode;
 import net.csibio.propro.constants.enums.TaskStatus;
+import net.csibio.propro.constants.enums.TaskTemplate;
 import net.csibio.propro.dao.LibraryDAO;
 import net.csibio.propro.domain.ResultDO;
 import net.csibio.propro.domain.db.LibraryDO;
@@ -14,16 +17,18 @@ import net.csibio.propro.domain.query.PeptideQuery;
 import net.csibio.propro.service.LibraryService;
 import net.csibio.propro.service.PeptideService;
 import net.csibio.propro.service.TaskService;
+import net.csibio.propro.utils.FileUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by James Lu MiaoShan
@@ -54,6 +59,10 @@ public class LibraryServiceImpl implements LibraryService {
     FastaParser fastaParser;
     @Autowired
     ShuffleGenerator shuffleGenerator;
+    @Autowired
+    LibraryTask libraryTask;
+    @Autowired
+    VMProperties vmProperties;
 
     @Override
     public List<LibraryDO> getSimpleAll(String username, Integer type, Boolean doPublic) {
@@ -261,5 +270,40 @@ public class LibraryServiceImpl implements LibraryService {
         taskDO.addLog("统计完毕");
         taskDO.finish(TaskStatus.SUCCESS.getName());
         taskService.update(taskDO);
+    }
+
+    @Override
+    public void scan() throws FileNotFoundException {
+        List<LibraryDO> libList = getSimpleAll(null, null, null);
+        Set<String> libPathSet = libList.stream().map(LibraryDO::getFilePath).collect(Collectors.toSet());
+        List<File> libFiles = FileUtil.scanLibraryFiles();
+        List<File> irtLibFiles = FileUtil.scanIrtLibraryFiles();
+        for (File file : libFiles) {
+            if (!libPathSet.contains(file.getAbsolutePath())) {
+                LibraryDO library = new LibraryDO(file.getName(), LibraryDO.TYPE_STANDARD, vmProperties.getAdminUsername());
+                library.setFilePath(file.getAbsolutePath());
+                ResultDO resultDO = insert(library);
+                if (resultDO.isFailed()) {
+                    logger.error(resultDO.getMsgInfo());
+                    continue;
+                }
+                TaskDO taskDO = new TaskDO(TaskTemplate.UPLOAD_LIBRARY_FILE, library.getName());
+                taskService.insert(taskDO);
+                libraryTask.saveLibraryTask(library, new FileInputStream(file), file.getName(), null, taskDO);
+            }
+        }
+        for (File file : irtLibFiles) {
+            if (!libPathSet.contains(file.getAbsolutePath())) {
+                LibraryDO library = new LibraryDO(file.getName(), LibraryDO.TYPE_IRT, vmProperties.getAdminUsername());
+                ResultDO resultDO = insert(library);
+                if (resultDO.isFailed()) {
+                    logger.error(resultDO.getMsgInfo());
+                    continue;
+                }
+                TaskDO taskDO = new TaskDO(TaskTemplate.UPLOAD_LIBRARY_FILE, library.getName());
+                taskService.insert(taskDO);
+                libraryTask.saveLibraryTask(library, new FileInputStream(file), file.getName(), null, taskDO);
+            }
+        }
     }
 }

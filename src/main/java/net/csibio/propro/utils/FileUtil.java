@@ -175,6 +175,38 @@ public class FileUtil {
         return newFileList;
     }
 
+    public static List<File> scanLibraryFiles() {
+        String libraryDir = RepositoryUtil.getLibraryRepo();
+        File directory = new File(libraryDir);
+
+        List<File> newFileList = new ArrayList<>();
+        File[] fileArray = directory.listFiles();
+        if (fileArray != null) {
+            for (File file : fileArray) {
+                if (file.isFile()) {
+                    newFileList.add(file);
+                }
+            }
+        }
+        return newFileList;
+    }
+
+    public static List<File> scanIrtLibraryFiles() {
+        String libraryDir = RepositoryUtil.getIrtLibraryRepo();
+        File directory = new File(libraryDir);
+
+        List<File> newFileList = new ArrayList<>();
+        File[] fileArray = directory.listFiles();
+        if (fileArray != null) {
+            for (File file : fileArray) {
+                if (file.isFile()) {
+                    newFileList.add(file);
+                }
+            }
+        }
+        return newFileList;
+    }
+
     /**
      * 删除单个文件
      *
@@ -337,6 +369,16 @@ public class FileUtil {
         if (bw != null) {
             try {
                 bw.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static void close(InputStream is) {
+        if (is != null) {
+            try {
+                is.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }

@@ -5,6 +5,7 @@ import net.csibio.propro.domain.db.TaskDO;
 import net.csibio.propro.domain.ResultDO;
 import net.csibio.propro.domain.query.LibraryQuery;
 
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.List;
 
@@ -42,4 +43,6 @@ public interface LibraryService {
     void countAndUpdateForLibrary(LibraryDO library);
 
     void uploadFile(LibraryDO library, InputStream libFileStream, String fileName, InputStream prmFileStream, TaskDO taskDO);
+
+    void scan() throws FileNotFoundException;
 }

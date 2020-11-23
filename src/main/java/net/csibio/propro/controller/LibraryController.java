@@ -9,6 +9,7 @@ import net.csibio.propro.domain.db.PeptideDO;
 import net.csibio.propro.domain.db.TaskDO;
 import net.csibio.propro.service.LibraryService;
 import net.csibio.propro.service.PeptideService;
+import net.csibio.propro.utils.FileUtil;
 import net.csibio.propro.utils.PermissionUtil;
 import net.csibio.propro.constants.Constants;
 import net.csibio.propro.constants.enums.ResultCode;
@@ -26,9 +27,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Created by James Lu MiaoShan
@@ -207,6 +212,18 @@ public class LibraryController extends BaseController {
         libraryService.countAndUpdateForLibrary(library);
 
         return "redirect:/library/detail/" + library.getId();
+    }
+
+    @RequestMapping(value = "/scan")
+    String edit(Model model, RedirectAttributes redirectAttributes) throws FileNotFoundException {
+        if (!isAdmin()) {
+            redirectAttributes.addFlashAttribute(ERROR_MSG, ResultCode.UNAUTHORIZED_ACCESS.getMessage());
+            return "redirect:/";
+        }
+        libraryService.scan();
+        redirectAttributes.addFlashAttribute(SUCCESS_MSG, ResultCode.OPERATING_SUCCESS.getMessage());
+
+        return "redirect:/";
     }
 
     @RequestMapping(value = "/edit/{id}")
