@@ -103,7 +103,7 @@ public class ShuffleGenerator extends BaseGenerator {
                 acids = fragmentFactory.getFragmentSequence(bestDecoy, oneAnno.getType(), oneAnno.getLocation());
             }catch (Exception e){
                 e.printStackTrace();
-                System.out.println(bestDecoy);
+                System.out.println(peptideDO.getFullName());
             }
             for (AminoAcid aminoAcid : acids) {
                 if (aminoAcid.getModId() != null) {

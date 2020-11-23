@@ -176,6 +176,7 @@ public class LibraryController extends BaseController {
         library.setDescription(description);
         library.setType(type);
         library.setCreator(getCurrentUsername());
+        library.setFilePath(libFile.getOriginalFilename());
         ResultDO resultDO = libraryService.insert(library);
         TaskDO taskDO = new TaskDO(TaskTemplate.UPLOAD_LIBRARY_FILE, library.getName());
         taskService.insert(taskDO);
@@ -192,7 +193,7 @@ public class LibraryController extends BaseController {
                 prmFileStream = prmFile.getInputStream();
             }
 
-            libraryTask.saveLibraryTask(library, libFileStream, libFile.getOriginalFilename(), prmFileStream, taskDO);
+            libraryTask.saveLibraryTask(library, libFileStream, prmFileStream, taskDO);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -288,6 +289,7 @@ public class LibraryController extends BaseController {
         PermissionUtil.check(library);
         library.setDescription(description);
         library.setType(type);
+
         ResultDO updateResult = libraryService.update(library);
         if (updateResult.isFailed()) {
             redirectAttributes.addFlashAttribute(ResultCode.UPDATE_ERROR.getMessage(), updateResult.getMsgInfo());
@@ -298,10 +300,11 @@ public class LibraryController extends BaseController {
         if (libFile == null || libFile.getOriginalFilename() == null || libFile.getOriginalFilename().isEmpty()) {
             return "redirect:/library/detail/" + library.getId();
         }
+        library.setFilePath(libFile.getOriginalFilename());
+        libraryService.update(library);
 
         TaskDO taskDO = new TaskDO(TaskTemplate.UPLOAD_LIBRARY_FILE, library.getName());
         taskService.insert(taskDO);
-
         try {
             InputStream libFileStream = libFile.getInputStream();
             InputStream prmFileStream = null;
@@ -309,7 +312,7 @@ public class LibraryController extends BaseController {
                 prmFileStream = prmFile.getInputStream();
             }
 
-            libraryTask.saveLibraryTask(library, libFileStream, libFile.getOriginalFilename(), prmFileStream, taskDO);
+            libraryTask.saveLibraryTask(library, libFileStream, prmFileStream, taskDO);
         } catch (IOException e) {
             e.printStackTrace();
         }

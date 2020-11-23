@@ -26,7 +26,7 @@ public interface LibraryService {
 
     long count(LibraryQuery query);
 
-    ResultDO insert(LibraryDO libraryDO);
+    ResultDO<LibraryDO> insert(LibraryDO libraryDO);
 
     ResultDO update(LibraryDO libraryDO);
 
@@ -38,11 +38,11 @@ public interface LibraryService {
 
     String getNameById(String id);
 
-    ResultDO parseAndInsert(LibraryDO library, InputStream in, String fileName, InputStream prmFileStream, TaskDO taskDO);
+    ResultDO parseAndInsert(LibraryDO library, InputStream in, InputStream prmFileStream, TaskDO taskDO);
 
     void countAndUpdateForLibrary(LibraryDO library);
 
-    void uploadFile(LibraryDO library, InputStream libFileStream, String fileName, InputStream prmFileStream, TaskDO taskDO);
+    void uploadFile(LibraryDO library, InputStream libFileStream, InputStream prmFileStream, TaskDO taskDO);
 
     void scan() throws FileNotFoundException;
 }

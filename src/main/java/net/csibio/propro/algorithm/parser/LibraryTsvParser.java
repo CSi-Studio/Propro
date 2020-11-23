@@ -212,14 +212,13 @@ public class LibraryTsvParser extends BaseLibraryParser {
         String fullName = row[columnMap.get(FullUniModPeptideName)];//no target sequence
         String[] transitionGroupId = row[columnMap.get(TransitionGroupId)].split("_");
         if (fullName == null) {
-            logger.info("Full Peptide Name cannot be empty");
-        } else {
             if (transitionGroupId.length > 2) {
-                peptideDO.setFullName(transitionGroupId[1]);
+                peptideDO.setFullName(transitionGroupId[2]);
             } else {
-                peptideDO.setFullName(transitionGroupId[0]);
+                logger.info("Full Peptide Name cannot be empty");
             }
         }
+        peptideDO.setFullName(fullName);
         peptideDO.setSequence(PeptideUtil.removeUnimod(peptideDO.getFullName()));
         try {
             peptideDO.setCharge(Integer.parseInt(row[columnMap.get(PrecursorCharge)]));

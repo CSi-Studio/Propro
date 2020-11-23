@@ -164,12 +164,17 @@ public class FastTraMLParser extends BaseLibraryParser {
                         continue;
                     }
                     String[] pepInfo = filePepRef.split("_");
-                    peptideDO.setPeptideRef(pepInfo[1] + "_" + pepInfo[2]);
-                    peptideDO.setFullName(pepInfo[1]);
-                    peptideDO.setSequence(PeptideUtil.removeUnimod(pepInfo[1]));
-                    peptideDO.setCharge(Integer.parseInt(pepInfo[2]));
-                    peptideDO.setLibraryId(libraryId);
-                    PeptideUtil.parseModification(peptideDO);
+                    try{
+                        peptideDO.setPeptideRef(pepInfo[1] + "_" + pepInfo[2]);
+                        peptideDO.setFullName(pepInfo[1]);
+                        peptideDO.setSequence(PeptideUtil.removeUnimod(pepInfo[1]));
+                        peptideDO.setCharge(Integer.parseInt(pepInfo[2]));
+                        peptideDO.setLibraryId(libraryId);
+                        PeptideUtil.parseModification(peptideDO);
+                    }catch (Exception e){
+                        logger.error(line);
+                    }
+
                     continue;
                 }
                 if (peptideDO.getPeptideRef() != null && line.contains(ProteinNameMarker)){

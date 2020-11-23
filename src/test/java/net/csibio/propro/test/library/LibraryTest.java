@@ -33,10 +33,11 @@ public class LibraryTest extends BaseTest {
         LibraryDO libraryDO = new LibraryDO();
         libraryDO.setName("测试用临时库");
         libraryDO.setType(LibraryDO.TYPE_STANDARD);
-        libraryService.insert(libraryDO);
         String filePath = getClass().getClassLoader().getResource("ChromatogramExtractor_input.tsv").getPath();
+        libraryDO.setFilePath(filePath);
+        libraryService.insert(libraryDO);
         File file = new File(filePath);
-        ResultDO resultDO = libraryService.parseAndInsert(libraryDO, new FileInputStream(file), filePath, null, new TaskDO());
+        ResultDO resultDO = libraryService.parseAndInsert(libraryDO, new FileInputStream(file), null, new TaskDO());
         assert resultDO.isSuccess();
         List<PeptideDO> trans = peptideService.getAllByLibraryId(libraryDO.getId());
         assert trans.size() == 3;

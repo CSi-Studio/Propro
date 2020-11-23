@@ -96,7 +96,7 @@ public class LibraryServiceImpl implements LibraryService {
     }
 
     @Override
-    public ResultDO insert(LibraryDO libraryDO) {
+    public ResultDO<LibraryDO> insert(LibraryDO libraryDO) {
         if (libraryDO.getName() == null || libraryDO.getName().isEmpty()) {
             return ResultDO.buildError(ResultCode.LIBRARY_NAME_CANNOT_BE_EMPTY);
         }
@@ -180,7 +180,7 @@ public class LibraryServiceImpl implements LibraryService {
     }
 
     @Override
-    public ResultDO parseAndInsert(LibraryDO library, InputStream libFileStream, String fileName, InputStream prmFileStream, TaskDO taskDO) {
+    public ResultDO parseAndInsert(LibraryDO library, InputStream libFileStream, InputStream prmFileStream, TaskDO taskDO) {
 
         ResultDO resultDO;
 
@@ -200,19 +200,20 @@ public class LibraryServiceImpl implements LibraryService {
             }
         }
 
-        if (fileName.toLowerCase().endsWith("tsv") || fileName.toLowerCase().endsWith("csv")) {
+        String filePath = library.getFilePath();
+        if (filePath.toLowerCase().endsWith("tsv") || filePath.toLowerCase().endsWith("csv")) {
             if (prmPeptideRefMap.isEmpty()) {
                 resultDO = tsvParser.parseAndInsert(libFileStream, library, taskDO);
             } else {
                 resultDO = tsvParser.selectiveParseAndInsert(libFileStream, library, new HashSet<>(prmPeptideRefMap.keySet()), false, taskDO);
             }
-        } else if (fileName.toLowerCase().endsWith("traml")) {
+        } else if (filePath.toLowerCase().endsWith("traml")) {
             if (prmPeptideRefMap.isEmpty()) {
                 resultDO = fastTraMLParser.parseAndInsert(libFileStream, library, taskDO);
             } else {
                 resultDO = fastTraMLParser.selectiveParseAndInsert(libFileStream, library, new HashSet<>(prmPeptideRefMap.keySet()), false, taskDO);
             }
-        } else if (fileName.toLowerCase().endsWith("txt")) {
+        } else if (filePath.toLowerCase().endsWith("txt")) {
             if (prmPeptideRefMap.isEmpty()) {
                 resultDO = msmsParser.parseAndInsert(libFileStream, library, taskDO);
             } else {
@@ -246,9 +247,9 @@ public class LibraryServiceImpl implements LibraryService {
     }
 
     @Override
-    public void uploadFile(LibraryDO library, InputStream libFileStream, String fileName, InputStream prmFileStream, TaskDO taskDO) {
+    public void uploadFile(LibraryDO library, InputStream libFileStream, InputStream prmFileStream, TaskDO taskDO) {
         //先Parse文件,再作数据库的操作
-        ResultDO result = parseAndInsert(library, libFileStream, fileName, prmFileStream, taskDO);
+        ResultDO result = parseAndInsert(library, libFileStream, prmFileStream, taskDO);
         if (result.getErrorList() != null) {
             if (result.getErrorList().size() > errorListNumberLimit) {
                 taskDO.addLog("解析错误,错误的条数过多,这边只显示" + errorListNumberLimit + "条错误信息");
@@ -283,21 +284,20 @@ public class LibraryServiceImpl implements LibraryService {
         List<File> irtLibFiles = FileUtil.scanIrtLibraryFiles();
         for (File file : libFiles) {
             if (!libPathSet.contains(file.getAbsolutePath())) {
-                LibraryDO library = new LibraryDO(file.getName(), LibraryDO.TYPE_STANDARD, vmProperties.getAdminUsername());
-                library.setFilePath(file.getAbsolutePath());
-                ResultDO resultDO = insert(library);
+                LibraryDO library = new LibraryDO(file.getName(), LibraryDO.TYPE_STANDARD, vmProperties.getAdminUsername(), file.getAbsolutePath());
+                ResultDO<LibraryDO> resultDO = insert(library);
                 if (resultDO.isFailed()) {
                     logger.error(resultDO.getMsgInfo());
                     continue;
                 }
                 TaskDO taskDO = new TaskDO(TaskTemplate.UPLOAD_LIBRARY_FILE, library.getName());
                 taskService.insert(taskDO);
-                libraryTask.saveLibraryTask(library, new FileInputStream(file), file.getName(), null, taskDO);
+                libraryTask.saveLibraryTask(library, new FileInputStream(file), null, taskDO);
             }
         }
         for (File file : irtLibFiles) {
             if (!libPathSet.contains(file.getAbsolutePath())) {
-                LibraryDO library = new LibraryDO(file.getName(), LibraryDO.TYPE_IRT, vmProperties.getAdminUsername());
+                LibraryDO library = new LibraryDO(file.getName(), LibraryDO.TYPE_IRT, vmProperties.getAdminUsername(), file.getAbsolutePath());
                 ResultDO resultDO = insert(library);
                 if (resultDO.isFailed()) {
                     logger.error(resultDO.getMsgInfo());
@@ -305,7 +305,7 @@ public class LibraryServiceImpl implements LibraryService {
                 }
                 TaskDO taskDO = new TaskDO(TaskTemplate.UPLOAD_LIBRARY_FILE, library.getName());
                 taskService.insert(taskDO);
-                libraryTask.saveLibraryTask(library, new FileInputStream(file), file.getName(), null, taskDO);
+                libraryTask.saveLibraryTask(library, new FileInputStream(file), null, taskDO);
             }
         }
     }

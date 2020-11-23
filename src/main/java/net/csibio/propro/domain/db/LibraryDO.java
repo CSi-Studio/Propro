@@ -80,9 +80,10 @@ public class LibraryDO extends BaseDO {
         this.type = libraryType;
     }
 
-    public LibraryDO(String libraryName, Integer libraryType, String creator){
+    public LibraryDO(String libraryName, Integer libraryType, String creator, String filePath){
         this.name = libraryName;
         this.type = libraryType;
         this.creator = creator;
+        this.filePath = filePath;
     }
 }
