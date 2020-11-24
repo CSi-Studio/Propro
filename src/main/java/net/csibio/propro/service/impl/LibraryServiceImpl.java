@@ -277,8 +277,11 @@ public class LibraryServiceImpl implements LibraryService {
         Set<String> libPathSet = libList.stream().map(LibraryDO::getFilePath).collect(Collectors.toSet());
         List<File> libFiles = FileUtil.scanLibraryFiles();
         List<File> irtLibFiles = FileUtil.scanIrtLibraryFiles();
+        logger.info("本地库:"+libFiles.size());
+        logger.info("本地iRT库:"+irtLibFiles.size());
         for (File file : libFiles) {
             if (!libPathSet.contains(file.getAbsolutePath())) {
+                logger.info("扫描到文件:"+file.getAbsolutePath()+",开始解析");
                 LibraryDO library = new LibraryDO(file.getName(), LibraryDO.TYPE_STANDARD, file.getAbsolutePath());
                 ResultDO<LibraryDO> resultDO = insert(library);
                 if (resultDO.isFailed()) {

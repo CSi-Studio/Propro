@@ -9,7 +9,6 @@ import net.csibio.propro.service.AnalyseOverviewService;
 import net.csibio.propro.service.ScoreService;
 import net.csibio.propro.constants.enums.ResultCode;
 import net.csibio.propro.constants.enums.ScoreType;
-import net.csibio.propro.dao.ConfigDAO;
 import net.csibio.propro.domain.ResultDO;
 import net.csibio.propro.domain.query.AnalyseDataQuery;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,8 +32,6 @@ public class ScoreController extends BaseController {
 
     @Autowired
     ScoreService scoreService;
-    @Autowired
-    ConfigDAO configDAO;
     @Autowired
     AnalyseOverviewService analyseOverviewService;
     @Autowired

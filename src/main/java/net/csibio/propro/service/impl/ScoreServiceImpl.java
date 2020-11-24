@@ -6,7 +6,6 @@ import net.csibio.propro.algorithm.feature.*;
 import net.csibio.propro.algorithm.fitter.LinearFitter;
 import net.csibio.propro.algorithm.peak.*;
 import net.csibio.propro.constants.enums.ScoreType;
-import net.csibio.propro.dao.ConfigDAO;
 import net.csibio.propro.domain.bean.analyse.SigmaSpacing;
 import net.csibio.propro.domain.bean.score.FeatureScores;
 import net.csibio.propro.domain.bean.score.PeakGroup;
@@ -74,8 +73,6 @@ public class ScoreServiceImpl implements ScoreService {
     LibraryScorer libraryScorer;
     @Autowired
     SwathLDAScorer swathLDAScorer;
-    @Autowired
-    ConfigDAO configDAO;
     @Autowired
     LinearFitter linearFitter;
     @Autowired

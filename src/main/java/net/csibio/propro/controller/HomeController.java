@@ -1,7 +1,6 @@
 package net.csibio.propro.controller;
 
 import net.csibio.propro.constants.enums.TaskStatus;
-import net.csibio.propro.dao.ConfigDAO;
 import net.csibio.propro.domain.query.LibraryQuery;
 import net.csibio.propro.domain.query.ProjectQuery;
 import net.csibio.propro.domain.query.TaskQuery;
@@ -33,8 +32,6 @@ public class HomeController extends BaseController {
     TaskService taskService;
     @Autowired
     ProjectService projectService;
-    @Autowired
-    ConfigDAO configDAO;
 
     @RequestMapping("/")
     String home(Model model) {

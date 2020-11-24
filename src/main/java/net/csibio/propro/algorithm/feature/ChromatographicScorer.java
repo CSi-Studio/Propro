@@ -1,11 +1,11 @@
 package net.csibio.propro.algorithm.feature;
 
+import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.Table;
 import net.csibio.propro.constants.enums.ScoreType;
 import net.csibio.propro.domain.bean.score.FeatureScores;
 import net.csibio.propro.domain.bean.score.PeakGroup;
 import net.csibio.propro.utils.MathUtil;
-import com.google.common.collect.HashBasedTable;
-import com.google.common.collect.Table;
 import org.apache.commons.math3.util.FastMath;
 import org.springframework.stereotype.Component;
 

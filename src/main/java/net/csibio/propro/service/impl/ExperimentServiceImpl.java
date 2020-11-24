@@ -225,6 +225,7 @@ public class ExperimentServiceImpl implements ExperimentService {
                 SwathIndexDO swathIndex = new SwathIndexDO();
                 BeanUtils.copyProperties(blockIndex, swathIndex);
                 swathIndex.setExpId(experimentDO.getId());
+                swathIndex.setRange(blockIndex.getWindowRange());
                 swathIndexList.add(swathIndex);
             }
 

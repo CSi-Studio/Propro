@@ -17,7 +17,6 @@ import net.csibio.propro.utils.FeatureUtil;
 import net.csibio.propro.utils.RepositoryUtil;
 import net.csibio.propro.constants.enums.ResultCode;
 import net.csibio.propro.constants.enums.ScoreType;
-import net.csibio.propro.dao.ConfigDAO;
 import net.csibio.propro.domain.ResultDO;
 import net.csibio.propro.domain.bean.analyse.AnalyseDataRT;
 import net.csibio.propro.domain.bean.analyse.ComparisonResult;
@@ -70,8 +69,6 @@ public class AnalyseController extends BaseController {
     GaussFilter gaussFilter;
     @Autowired
     SignalToNoiseEstimator signalToNoiseEstimator;
-    @Autowired
-    ConfigDAO configDAO;
     @Autowired
     FragmentFactory fragmentFactory;
     @Autowired

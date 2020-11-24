@@ -151,7 +151,7 @@ public class Irt {
 
             //Step3.提取指定原始谱图
             try {
-                rtMap = (TreeMap<Float, MzIntensityPairs>) parser.getSpectrums(swathIndexDO.getStartPtr(), swathIndexDO.getEndPtr(), swathIndexDO.getRts(), swathIndexDO.getMzs(), swathIndexDO.getInts());
+                rtMap = parser.getSpectrums(swathIndexDO.getStartPtr(), swathIndexDO.getEndPtr(), swathIndexDO.getRts(), swathIndexDO.getMzs(), swathIndexDO.getInts());
             } catch (Exception e) {
                 logger.error("PrecursorMZStart:" + swathIndexDO.getRange().getStart());
                 throw e;
@@ -168,7 +168,8 @@ public class Irt {
                 extractor.extractForIrtWithLib(finalList, coordinates, rtMap, null, ep);
             }
         }
-
+        //使用完毕以后关闭parser
+        parser.close();
 
         return finalList;
     }

@@ -22,14 +22,17 @@ public class SwathIndexDO {
     /**
      * 1: ms1 swath block, 2: ms2 swath block
      */
+    @Indexed
     Integer level;
     /**
      * 在文件中的开始位置
      */
+    @Indexed
     Long startPtr;
     /**
      * 在文件中的结束位置
      */
+    @Indexed
     Long endPtr;
     /**
      * SWATH块对应的WindowRange

@@ -19,7 +19,7 @@ import java.util.*;
  */
 public class FileUtil {
 
-    public final Logger logger = LoggerFactory.getLogger(getClass());
+    public static final Logger logger = LoggerFactory.getLogger(FileUtil.class);
 
     public static String readFile(File file) throws IOException {
         FileInputStream fis = new FileInputStream(file);
@@ -177,6 +177,7 @@ public class FileUtil {
 
     public static List<File> scanLibraryFiles() {
         String libraryDir = RepositoryUtil.getLibraryRepo();
+        logger.info("本地路径:"+libraryDir);
         File directory = new File(libraryDir);
 
         List<File> newFileList = new ArrayList<>();

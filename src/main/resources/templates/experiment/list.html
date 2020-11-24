@@ -60,7 +60,6 @@
                     <th width="5%" th:text="#{label_vendor_file_size}"></th>
                     <th width="5%" th:text="#{label_swath_windows_count}"></th>
                     <th width="8%" th:text="#{label_irt_result}"></th>
-                    <th width="10%" th:text="#{label_instrument_model}"></th>
                     <th width="8%" th:text="#{label_last_modified_date}"></th>
                     <th width="10%" th:text="#{label_reco_conv_total}"></th>
                     <th width="15%" th:text="#{label_operation}"></th>
@@ -95,7 +94,6 @@
                     <td>
                         <a th:data1="${experiment.id}" th:onclick="query(this.getAttribute('data1'))" data-toggle="modal" data-target="#m_modal_irt" href="#" th:text="|${experiment.irtResult?.si?.slope} -> ${experiment.irtResult?.si?.intercept}|"></a>
                     </td>
-                    <td th:text="|${experiment.instrument?.manufacturer} ${experiment.instrument?.model}|"></td>
                     <td th:text="${#dates.format(experiment.lastModifiedDate,'yyyy-MM-dd HH:mm:ss')}"></td>
                     <td>
                         <a th:href="@{/analyse/overview/list(expId=${experiment.id})}" data-toggle="m-tooltip" th:title="#{label_analyse_overview}">

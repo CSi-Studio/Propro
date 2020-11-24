@@ -134,7 +134,8 @@ public class LibraryController extends BaseController {
     }
 
     @RequestMapping(value = "/scan")
-    String edit(Model model, RedirectAttributes redirectAttributes) throws FileNotFoundException {
+    String scan(Model model, RedirectAttributes redirectAttributes) throws FileNotFoundException {
+        logger.info("开始扫描");
         libraryService.scan();
         redirectAttributes.addFlashAttribute(SUCCESS_MSG, ResultCode.OPERATING_SUCCESS.getMessage());
 
@@ -234,27 +235,14 @@ public class LibraryController extends BaseController {
     @RequestMapping(value = "/delete/{id}")
     String delete(Model model, @PathVariable("id") String id,
                   RedirectAttributes redirectAttributes) {
-        LibraryDO library = libraryService.getById(id);
-        int type = 0;
-        if (library != null) {
-            type = library.getType();
-        }
         ResultDO resultDO = libraryService.delete(id);
-
-        String redirectListUrl = null;
-        if (type == 1) {
-            redirectListUrl = "redirect:/library/listIrt";
-        } else {
-            redirectListUrl = "redirect:/library/list";
-        }
         peptideService.deleteAllByLibraryId(id);
         if (resultDO.isSuccess()) {
             redirectAttributes.addFlashAttribute(SUCCESS_MSG, SuccessMsg.DELETE_LIBRARY_SUCCESS);
-            return redirectListUrl;
         } else {
             redirectAttributes.addFlashAttribute(ERROR_MSG, resultDO.getMsgInfo());
-            return redirectListUrl;
         }
+        return "redirect:/library/list";
     }
 
     @RequestMapping(value = "/search")

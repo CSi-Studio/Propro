@@ -1,6 +1,5 @@
 package net.csibio.propro.controller;
 
-import net.csibio.propro.component.ChunkUploader;
 import net.csibio.propro.config.VMProperties;
 import net.csibio.propro.constants.Constants;
 import net.csibio.propro.constants.SuccessMsg;
@@ -18,18 +17,20 @@ import net.csibio.propro.domain.params.ExtractParams;
 import net.csibio.propro.domain.params.IrtParams;
 import net.csibio.propro.domain.params.WorkflowParams;
 import net.csibio.propro.domain.query.ProjectQuery;
-import net.csibio.propro.domain.vo.FileBlockVO;
-import net.csibio.propro.domain.vo.FileVO;
-import net.csibio.propro.domain.vo.UploadVO;
 import net.csibio.propro.service.*;
-import net.csibio.propro.utils.*;
+import net.csibio.propro.utils.FeatureUtil;
+import net.csibio.propro.utils.FileUtil;
+import net.csibio.propro.utils.RepositoryUtil;
+import net.csibio.propro.utils.ScoreUtil;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
@@ -62,8 +63,6 @@ public class ProjectController extends BaseController {
     SwathIndexService swathIndexService;
     @Autowired
     VMProperties vmProperties;
-    @Autowired
-    ChunkUploader chunkUploader;
 
     @RequestMapping(value = "/list")
     String list(Model model,
@@ -89,10 +88,8 @@ public class ProjectController extends BaseController {
 
     @RequestMapping(value = "/create")
     String create(Model model) {
-
         model.addAttribute("libraries", getLibraryList(0));
         model.addAttribute("iRtLibraries", getLibraryList(1));
-
         return "project/create";
     }
 
@@ -168,11 +165,13 @@ public class ProjectController extends BaseController {
     String update(Model model, @RequestParam("id") String id,
                   @RequestParam(value = "description", required = false) String description,
                   @RequestParam(value = "type", required = true) String type,
+                  @RequestParam(value = "creator", required = false) String creator,
                   @RequestParam(value = "libraryId", required = false) String libraryId,
                   @RequestParam(value = "iRtLibraryId", required = false) String iRtLibraryId,
                   RedirectAttributes redirectAttributes) {
         ProjectDO project = projectService.getById(id);
         project.setDescription(description);
+        project.setCreator(creator);
         project.setType(type);
         LibraryDO lib = libraryService.getById(libraryId);
         if (lib != null) {
@@ -192,13 +191,6 @@ public class ProjectController extends BaseController {
             return "project/create";
         }
         return "redirect:/project/list";
-    }
-
-    @RequestMapping(value = "/check", method = RequestMethod.POST)
-    @ResponseBody
-    public Object check(FileBlockVO block,
-                        @RequestParam(value = "projectName", required = true) String projectName) {
-        return chunkUploader.check(block, projectName);
     }
 
     @RequestMapping(value = "/scan")

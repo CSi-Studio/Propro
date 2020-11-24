@@ -69,11 +69,6 @@
                            class="btn btn-accent m-btn m-btn--icon m-btn--icon-only">
                             <i class="fa fa-search"></i>
                         </a>
-                        <a th:href="@{/project/filemanager(name=${project?.name})}" data-toggle="m-tooltip"
-                           th:title="#{label_file_manager}"
-                           class="btn btn-info m-btn m-btn--icon m-btn--icon-only">
-                            <i class="fa fa-arrow-circle-up"></i>
-                        </a>
                         <a th:href="@{/project/edit/{id}(id=${project.id})}" data-toggle="m-tooltip"
                            th:title="#{btn_edit}"
                            class="btn btn-brand m-btn m-btn--icon m-btn--icon-only">
