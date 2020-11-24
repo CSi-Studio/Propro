@@ -12,7 +12,6 @@ import net.csibio.propro.domain.db.SwathIndexDO;
 import net.csibio.propro.service.ExperimentService;
 import net.csibio.propro.service.SwathIndexService;
 import net.csibio.propro.utils.CompressUtil;
-import net.csibio.propro.utils.PermissionUtil;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -54,7 +53,6 @@ public class SpectrumController extends BaseController {
             resultDO.setErrorResult(ResultCode.EXPERIMENT_NOT_EXISTED);
             return resultDO;
         }
-        PermissionUtil.check(expResult.getModel());
 
         SwathIndexDO swathIndex = swathIndexService.getById(indexId);
         if (swathIndex == null) {

@@ -1,19 +1,21 @@
 package net.csibio.propro.controller;
 
 import com.alibaba.fastjson.JSON;
+import net.csibio.propro.constants.enums.ResultCode;
+import net.csibio.propro.constants.enums.TaskStatus;
+import net.csibio.propro.constants.enums.TaskTemplate;
 import net.csibio.propro.domain.ResultDO;
 import net.csibio.propro.domain.db.TaskDO;
 import net.csibio.propro.domain.query.TaskQuery;
 import net.csibio.propro.service.TaskService;
-import net.csibio.propro.utils.PermissionUtil;
-import net.csibio.propro.constants.enums.ResultCode;
-import net.csibio.propro.constants.enums.TaskStatus;
-import net.csibio.propro.constants.enums.TaskTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -54,9 +56,6 @@ public class TaskController extends BaseController {
         if(taskStatus != null && !taskStatus.isEmpty() && !taskStatus.equals("All")){
             query.setStatus(taskStatus);
         }
-        if(!isAdmin()){
-            query.setCreator(getCurrentUsername());
-        }
         query.setPageSize(pageSize);
         query.setPageNo(currentPage);
         query.setSortColumn("createDate");
@@ -76,7 +75,6 @@ public class TaskController extends BaseController {
             model.addAttribute(ERROR_MSG, ResultCode.OBJECT_NOT_EXISTED.getMessage());
             return "task/detail";
         }
-        PermissionUtil.check(resultDO.getModel());
 
         TaskDO taskDO = resultDO.getModel();
         model.addAttribute("task", taskDO);
@@ -94,7 +92,6 @@ public class TaskController extends BaseController {
     String getTaskInfo(Model model, @PathVariable("id") String id) {
         ResultDO<TaskDO> resultDO = taskService.getById(id);
         if (resultDO.isSuccess() && resultDO.getModel() != null) {
-            PermissionUtil.check(resultDO.getModel());
             return JSON.toJSONString(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(resultDO.getModel().getLastModifiedDate()));
         } else {
             return null;
@@ -104,7 +101,6 @@ public class TaskController extends BaseController {
     @RequestMapping(value = "/delete/{id}")
     String delete(Model model, @PathVariable("id") String id) {
         ResultDO<TaskDO> resultDO = taskService.getById(id);
-        PermissionUtil.check(resultDO.getModel());
         taskService.delete(id);
         return "redirect:/task/list";
     }

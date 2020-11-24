@@ -7,7 +7,6 @@ import net.csibio.propro.service.SwathIndexService;
 import net.csibio.propro.constants.enums.ResultCode;
 import net.csibio.propro.domain.ResultDO;
 import net.csibio.propro.domain.query.SwathIndexQuery;
-import net.csibio.propro.utils.PermissionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -55,7 +54,6 @@ public class SwathIndexController extends BaseController {
             model.addAttribute(ERROR_MSG, ResultCode.EXPERIMENT_NOT_EXISTED.getMessage());
             return "swathindex/list";
         }
-        PermissionUtil.check(expResult.getModel());
         model.addAttribute("experiment", expResult.getModel());
         SwathIndexQuery query = new SwathIndexQuery();
         query.setExpId(expId);
@@ -85,7 +83,6 @@ public class SwathIndexController extends BaseController {
         SwathIndexDO swathIndex = swathIndexService.getById(id);
         if (swathIndex != null) {
             ResultDO<ExperimentDO> expResult = experimentService.getById(swathIndex.getExpId());
-            PermissionUtil.check(expResult.getModel());
 
             model.addAttribute("swathIndex", swathIndex);
             return "swathindex/detail";

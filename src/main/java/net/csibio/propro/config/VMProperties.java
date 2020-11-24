@@ -15,15 +15,6 @@ public class VMProperties {
     @Autowired
     private Environment env;
 
-    @Value("${admin.username}")
-    private String adminUsername;
-
-    @Value("${admin.password}")
-    private String adminPassword;
-
-    @Value("${dingtalk.robot}")
-    private String dingtalkRobot;
-
     @Value("${repository}")
     private String repository;
 
@@ -34,39 +25,6 @@ public class VMProperties {
     public void init() {
         System.out.println(env.getProperty("multiple"));
         RepositoryUtil.repository = repository;
-    }
-
-    public String getDingtalkRobot() {
-        if (StringUtils.isEmpty(dingtalkRobot)) {
-            dingtalkRobot = "https://oapi.dingtalk.com/robot/send?access_token=f2fb029431f174e678106b30c2db5fb0e40e921999386a61031bf864f18beb77";
-        }
-        return dingtalkRobot;
-    }
-
-    public void setDingtalkRobot(String dingtalkRobot) {
-        this.dingtalkRobot = dingtalkRobot;
-    }
-
-    public String getAdminUsername() {
-        if (StringUtils.isEmpty(adminUsername)) {
-            adminUsername = "admin";
-        }
-        return adminUsername;
-    }
-
-    public void setAdminUsername(String adminUsername) {
-        this.adminUsername = adminUsername;
-    }
-
-    public String getAdminPassword() {
-        if (StringUtils.isEmpty(adminPassword)) {
-            adminPassword = "admin";
-        }
-        return adminPassword;
-    }
-
-    public void setAdminPassword(String adminPassword) {
-        this.adminPassword = adminPassword;
     }
 
     public void setRepository(String repository) {

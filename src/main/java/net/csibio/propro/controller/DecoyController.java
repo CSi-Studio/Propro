@@ -5,7 +5,6 @@ import net.csibio.propro.domain.db.LibraryDO;
 import net.csibio.propro.domain.db.PeptideDO;
 import net.csibio.propro.domain.query.PeptideQuery;
 import net.csibio.propro.service.PeptideService;
-import net.csibio.propro.utils.PermissionUtil;
 import net.csibio.propro.algorithm.decoy.BaseGenerator;
 import net.csibio.propro.algorithm.decoy.generator.NicoGenerator;
 import net.csibio.propro.algorithm.decoy.generator.ShuffleGenerator;
@@ -38,10 +37,7 @@ public class DecoyController extends BaseController {
     String delete(Model model, @RequestParam(value = "id", required = true) String id) {
 
         LibraryDO library = libraryService.getById(id);
-        PermissionUtil.check(library);
-
         peptideService.deleteAllDecoyByLibraryId(id);
-
         libraryService.countAndUpdateForLibrary(library);
         return "redirect:/library/detail/" + id;
     }
@@ -52,7 +48,6 @@ public class DecoyController extends BaseController {
                     @RequestParam(value = "generator", required = false, defaultValue = "shuffle") String generator) {
 
         LibraryDO library = libraryService.getById(id);
-        PermissionUtil.check(library);
 
         logger.info("正在删除原有伪肽段");
         //删除原有的伪肽段

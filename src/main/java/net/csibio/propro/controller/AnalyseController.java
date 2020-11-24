@@ -14,7 +14,6 @@ import net.csibio.propro.algorithm.peak.FeatureExtractor;
 import net.csibio.propro.algorithm.peak.GaussFilter;
 import net.csibio.propro.algorithm.peak.SignalToNoiseEstimator;
 import net.csibio.propro.utils.FeatureUtil;
-import net.csibio.propro.utils.PermissionUtil;
 import net.csibio.propro.utils.RepositoryUtil;
 import net.csibio.propro.constants.enums.ResultCode;
 import net.csibio.propro.constants.enums.ScoreType;
@@ -101,7 +100,6 @@ public class AnalyseController extends BaseController {
                 model.addAttribute(ERROR_MSG, ResultCode.EXPERIMENT_NOT_EXISTED);
                 return "analyse/overview/list";
             }
-            PermissionUtil.check(expResult.getModel());
             model.addAttribute("experiment", expResult.getModel());
         }
 
@@ -110,9 +108,6 @@ public class AnalyseController extends BaseController {
         query.setPageNo(currentPage);
         if (StringUtils.isNotEmpty(expId)) {
             query.setExpId(expId);
-        }
-        if (!isAdmin()) {
-            query.setOwnerName(getCurrentUsername());
         }
         query.setOrderBy(Sort.Direction.DESC);
         query.setSortColumn("createDate");
@@ -130,7 +125,6 @@ public class AnalyseController extends BaseController {
 
         ResultDO<AnalyseOverviewDO> resultDO = analyseOverviewService.getById(id);
         AnalyseOverviewDO overview = resultDO.getModel();
-        PermissionUtil.check(resultDO.getModel());
 
         LibraryDO library = libraryService.getById(overview.getLibraryId());
 
@@ -162,7 +156,6 @@ public class AnalyseController extends BaseController {
             redirectAttributes.addFlashAttribute(ERROR_MSG, ResultCode.ANALYSE_OVERVIEW_NOT_EXISTED);
             return "redirect:/analyse/overview/list";
         }
-        PermissionUtil.check(overviewResult.getModel());
         ResultDO<ExperimentDO> experimentResult = experimentService.getById(overviewResult.getModel().getExpId());
         if (experimentResult.isFailed()) {
             redirectAttributes.addFlashAttribute(ERROR_MSG, ResultCode.EXPERIMENT_NOT_EXISTED);
@@ -217,7 +210,6 @@ public class AnalyseController extends BaseController {
     String overviewDelete(Model model, @PathVariable("id") String id, RedirectAttributes redirectAttributes) {
 
         ResultDO<AnalyseOverviewDO> overviewResult = analyseOverviewService.getById(id);
-        PermissionUtil.check(overviewResult.getModel());
         String expId = overviewResult.getModel().getExpId();
         analyseOverviewService.delete(id);
         redirectAttributes.addFlashAttribute(SUCCESS_MSG, SuccessMsg.DELETE_SUCCESS);
@@ -267,7 +259,6 @@ public class AnalyseController extends BaseController {
         List<AnalyseOverviewDO> overviews = new ArrayList<>();
         for (String overviewId : overviewIds) {
             ResultDO<AnalyseOverviewDO> tempResult = analyseOverviewService.getById(overviewId);
-            PermissionUtil.check(tempResult.getModel());
             overviews.add(tempResult.getModel());
         }
 
@@ -291,8 +282,6 @@ public class AnalyseController extends BaseController {
         model.addAttribute("peptideRef", peptideRef);
 
         ResultDO<AnalyseOverviewDO> overviewResult = analyseOverviewService.getById(overviewId);
-
-        PermissionUtil.check(overviewResult.getModel());
         model.addAttribute("overview", overviewResult.getModel());
 
         AnalyseDataQuery query = new AnalyseDataQuery();
@@ -373,7 +362,6 @@ public class AnalyseController extends BaseController {
             return "analyse/data/clinic";
         }
         ExperimentDO experiment = experimentService.getById(expId).getModel();
-        PermissionUtil.check(experiment);
         if (experiment.getIrtResult() == null) {
             model.addAttribute("rtExtractWindow", -1f);
             rtExtractWindow = -1f;

@@ -47,47 +47,11 @@
                 </ul>
             </div>
         </li>
-        <li class="m-menu__item  m-menu__item--submenu m-menu__item--rel" data-menu-submenu-toggle="click" aria-haspopup="true">
-            <a href="#" class="m-menu__link m-menu__toggle">
-                <span class="m-menu__link-text" th:text="#{menu_library_and_irt_library}"></span>
-                <i class="m-menu__hor-arrow la la-angle-down"></i>
-                <i class="m-menu__ver-arrow la la-angle-right"></i>
+
+        <li class="m-menu__item  m-menu__item--submenu m-menu__item--rel">
+            <a th:href="@{/library/list}" class="m-menu__link">
+                <span class="m-menu__link-text" th:text="#{menu_library}"></span>
             </a>
-            <div class="m-menu__submenu m-menu__submenu--classic m-menu__submenu--left">
-                <span class="m-menu__arrow m-menu__arrow--adjust"></span>
-                <ul class="m-menu__subnav">
-                    <li class="m-menu__item " aria-haspopup="true">
-                        <a th:href="@{/library/list}" class="m-menu__link ">
-                            <i class="m-menu__link-icon flaticon-file"></i>
-                            <span class="m-menu__link-text" th:text="#{menu_library_list}"></span>
-                        </a>
-                    </li>
-                    <li class="m-menu__item " data-redirect="true" aria-haspopup="true">
-                        <a th:href="@{/library/listIrt}" class="m-menu__link ">
-                            <i class="m-menu__link-icon flaticon-diagram"></i>
-                            <span class="m-menu__link-text" th:text="#{menu_irt_library_list}"></span>
-                        </a>
-                    </li>
-<!--                    <li class="m-menu__item " aria-haspopup="true">-->
-<!--                        <a th:href="@{/library/listPublic}" class="m-menu__link ">-->
-<!--                            <i class="m-menu__link-icon flaticon-file"></i>-->
-<!--                            <span class="m-menu__link-text" th:text="#{label_public_library}"></span>-->
-<!--                        </a>-->
-<!--                    </li>-->
-<!--                    <li class="m-menu__item " data-redirect="true" aria-haspopup="true">-->
-<!--                        <a th:href="@{/library/listPublicIrt}" class="m-menu__link ">-->
-<!--                            <i class="m-menu__link-icon flaticon-diagram"></i>-->
-<!--                            <span class="m-menu__link-text" th:text="#{label_public_irt_library}"></span>-->
-<!--                        </a>-->
-<!--                    </li>-->
-<!--                    <li class="m-menu__item " data-redirect="true" aria-haspopup="true">-->
-<!--                        <a th:href="@{/peptide/list}" class="m-menu__link ">-->
-<!--                            <i class="m-menu__link-icon flaticon-map"></i>-->
-<!--                            <span class="m-menu__link-text" th:text="#{menu_peptide_list}"></span>-->
-<!--                        </a>-->
-<!--                    </li>-->
-                </ul>
-            </div>
         </li>
 
         <li class="m-menu__item  m-menu__item--submenu m-menu__item--rel">
@@ -95,32 +59,6 @@
                 <span class="m-menu__link-text" th:text="#{menu_project}"></span>
             </a>
         </li>
-
-<!--        <li class="m-menu__item  m-menu__item&#45;&#45;submenu m-menu__item&#45;&#45;rel">-->
-<!--            <a th:href="@{/experiment/list}" class="m-menu__link">-->
-<!--                <span class="m-menu__link-text" th:text="#{menu_experiment}"></span>-->
-<!--            </a>-->
-<!--        </li>-->
-
-<!--        <li class="m-menu__item  m-menu__item&#45;&#45;submenu m-menu__item&#45;&#45;rel" data-menu-submenu-toggle="click" aria-haspopup="true">-->
-<!--            <a href="#" class="m-menu__link m-menu__toggle">-->
-<!--                <span class="m-menu__link-text" th:text="#{menu_analyse_overview}"></span>-->
-<!--                <i class="m-menu__hor-arrow la la-angle-down"></i>-->
-<!--                <i class="m-menu__ver-arrow la la-angle-right"></i>-->
-<!--            </a>-->
-<!--            <div class="m-menu__submenu m-menu__submenu&#45;&#45;classic m-menu__submenu&#45;&#45;left">-->
-<!--                <span class="m-menu__arrow m-menu__arrow&#45;&#45;adjust"></span>-->
-<!--                <ul class="m-menu__subnav">-->
-<!--                    <li class="m-menu__item " aria-haspopup="true">-->
-<!--                        <a th:href="@{/analyse/overview/list}" class="m-menu__link ">-->
-<!--                            <i class="m-menu__link-icon flaticon-file"></i>-->
-<!--                            <span class="m-menu__link-text" th:text="#{menu_analyse_overview_list}"></span>-->
-<!--                        </a>-->
-<!--                    </li>-->
-<!--                </ul>-->
-<!--            </div>-->
-<!--        </li>-->
-
 
         <li class="m-menu__item  m-menu__item--submenu m-menu__item--rel" data-menu-submenu-toggle="click"
             aria-haspopup="true">

@@ -21,15 +21,11 @@ public class ProjectDO extends BaseDO {
     @Indexed(unique = true)
     String name;
 
-    //是否设置为公共项目
-    @Indexed
-    boolean doPublic = false;
-
     //DIA_SWATH, PRM
     String type;
 
     //项目负责人名称
-    String ownerName;
+    String creator;
 
     //默认的标准库
     String libraryId;

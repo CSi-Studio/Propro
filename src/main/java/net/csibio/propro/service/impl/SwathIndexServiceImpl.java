@@ -9,8 +9,6 @@ import net.csibio.propro.domain.query.SwathIndexQuery;
 import net.csibio.propro.service.SwathIndexService;
 import net.csibio.propro.utils.ArrayUtil;
 import net.csibio.propro.utils.ConvolutionUtil;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -47,25 +47,16 @@ public class LibraryDAO extends BaseDAO<LibraryDO, LibraryQuery> {
         if (libraryQuery.getType() != null) {
             query.addCriteria(where("type").is(libraryQuery.getType()));
         }
-        if (libraryQuery.getDoPublic() != null) {
-            query.addCriteria(where("doPublic").is(libraryQuery.getDoPublic()));
-        }
         if (libraryQuery.getCreator() != null) {
             query.addCriteria(where("creator").is(libraryQuery.getCreator()));
         }
         return query;
     }
 
-    public List<LibraryDO> getSimpleAll(String username, Integer type, Boolean doPublic) {
+    public List<LibraryDO> getSimpleAll(Integer type) {
         Document queryDoc = new Document();
         if (type != null) {
             queryDoc.put("type", type);
-        }
-        if (username != null) {
-            queryDoc.put("creator", username);
-        }
-        if (doPublic != null) {
-            queryDoc.put("doPublic", doPublic);
         }
         Document fieldsDoc = new Document();
         fieldsDoc.put("id", true);
@@ -80,7 +71,6 @@ public class LibraryDAO extends BaseDAO<LibraryDO, LibraryQuery> {
         if (type != null) {
             queryDoc.put("type", type);
         }
-        queryDoc.put("doPublic", true);
 
         Document fieldsDoc = new Document();
         fieldsDoc.put("id", true);

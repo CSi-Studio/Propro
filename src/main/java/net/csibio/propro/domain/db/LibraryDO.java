@@ -27,11 +27,6 @@ public class LibraryDO extends BaseDO {
     @Id
     String id;
 
-    //是否设置为公共项目
-    @Indexed
-    boolean doPublic = false;
-
-    @Indexed
     String creator;
 
     //项目标签
@@ -80,10 +75,9 @@ public class LibraryDO extends BaseDO {
         this.type = libraryType;
     }
 
-    public LibraryDO(String libraryName, Integer libraryType, String creator, String filePath){
+    public LibraryDO(String libraryName, Integer libraryType, String filePath){
         this.name = libraryName;
         this.type = libraryType;
-        this.creator = creator;
         this.filePath = filePath;
     }
 }

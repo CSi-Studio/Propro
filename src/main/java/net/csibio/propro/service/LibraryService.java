@@ -20,9 +20,7 @@ public interface LibraryService {
 
     List<LibraryDO> getAll(LibraryQuery query);
 
-    List<LibraryDO> getSimpleAll(String username, Integer type, Boolean doPublic);
-
-    List<LibraryDO> getAllPublic(Integer type);
+    List<LibraryDO> getSimpleAll(Integer type);
 
     long count(LibraryQuery query);
 

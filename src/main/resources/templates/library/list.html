@@ -40,14 +40,14 @@
                 <tr>
                     <th width="20%" th:text="#{label_library_id}"></th>
                     <th width="15%" th:text="#{label_library_name}"></th>
-                    <th width="5%" th:text="#{label_do_public}"></th>
-                    <th width="5%">Generator</th>
+                    <th width="15%" th:text="#{label_library_type}"></th>
+                    <th width="10%">Decoy Generator</th>
                     <th width="5%" th:text="#{label_proteins_count}"></th>
                     <th width="5%" th:text="#{label_peptides_count}"></th>
-                    <th width="5%" th:text="#{label_peptide_protein_rate}"></th>
+                    <th width="10%" th:text="#{label_peptide_protein_rate}"></th>
                     <th width="15%" th:text="#{label_create_date}"></th>
-                    <th width="15%" th:text="#{label_creator}"></th>
-                    <th width="15%" th:text="#{label_operation}"></th>
+                    <th width="5%" th:text="#{label_creator}"></th>
+                    <th width="10%" th:text="#{label_operation}"></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -58,12 +58,9 @@
                            th:title="#{btn_detail}" th:text="${library.name}">
                         </a>
                     </td>
-                    <td th:if="${library.doPublic}">
-                        <span class="m-badge m-badge--success m-badge--wide">Public</span>
-                    </td>
-                    <td th:if="${!library.doPublic}">
-                        <span class="m-badge m-badge--danger m-badge--wide">Private</span>
-                    </td>
+                    <td th:if="${library.type}!=0" th:text="#{label_irt_library}"></td>
+                    <td th:unless="${library.type}!=0" th:text="#{label_library}"></td>
+
                     <td th:text="${library.generator}"></td>
                     <td >
                         <a th:href="@{/peptide/protein(libraryId=${library.id})}" data-toggle="m-tooltip"
@@ -84,12 +81,6 @@
                            th:title="#{btn_modify}"
                            class="btn btn-warning m-btn m-btn--icon m-btn--icon-only">
                             <i class="fa fa-edit"></i>
-                        </a>
-
-                        <a th:href="@{/library/setPublic/{id}(id=${library.id})}" data-toggle="m-tooltip"
-                           th:title="#{btn_set_public}"
-                           class="btn btn-danger m-btn m-btn--icon m-btn--icon-only">
-                            <i class="fa fa-opencart"></i>
                         </a>
                     </td>
                 </tr>

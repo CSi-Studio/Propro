@@ -34,8 +34,6 @@ public class Extractor {
 
     public final Logger logger = LoggerFactory.getLogger(Extractor.class);
 
-    //    @Autowired
-//    AirdFileParser airdFileParser;
     @Autowired
     LibraryService libraryService;
     @Autowired

@@ -1,9 +1,8 @@
 package net.csibio.propro.controller;
 
+import net.csibio.propro.constants.SuccessMsg;
 import net.csibio.propro.dao.ConfigDAO;
 import net.csibio.propro.domain.db.ConfigDO;
-import net.csibio.propro.constants.SuccessMsg;
-import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.tomcat.util.buf.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -45,8 +44,6 @@ public class ConfigController extends BaseController {
         return "redirect:/";
     }
 
-    
-    @RequiresRoles({"admin"})
     @RequestMapping(value = "/config")
     String config(Model model) {
         ConfigDO configDO = configDAO.getConfig();
@@ -55,7 +52,6 @@ public class ConfigController extends BaseController {
         return "config";
     }
 
-    @RequiresRoles({"admin"})
     @RequestMapping(value = "/update")
     String update(Model model,
                   @RequestParam(value = "repoUrls", required = false) String repoUrls

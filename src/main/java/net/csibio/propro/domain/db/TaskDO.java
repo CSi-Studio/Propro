@@ -6,7 +6,6 @@ import net.csibio.propro.constants.enums.TaskStatus;
 import net.csibio.propro.constants.enums.TaskTemplate;
 import net.csibio.propro.domain.BaseDO;
 import lombok.Data;
-import org.apache.shiro.SecurityUtils;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -49,7 +48,6 @@ public class TaskDO extends BaseDO {
     }
 
     public TaskDO(TaskTemplate taskTemplate, String taskSuffixName) {
-        this.creator = ((UserDO)SecurityUtils.getSubject().getPrincipal()).getUsername();
         this.taskTemplate = taskTemplate.getName();
         this.status = TaskStatus.WAITING.getName();
         this.name = taskTemplate.getName() + "-" + taskSuffixName;

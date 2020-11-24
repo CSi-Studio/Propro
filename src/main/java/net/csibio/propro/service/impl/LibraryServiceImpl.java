@@ -65,13 +65,8 @@ public class LibraryServiceImpl implements LibraryService {
     VMProperties vmProperties;
 
     @Override
-    public List<LibraryDO> getSimpleAll(String username, Integer type, Boolean doPublic) {
-        return libraryDAO.getSimpleAll(username, type, doPublic);
-    }
-
-    @Override
-    public List<LibraryDO> getAllPublic(Integer type) {
-        return libraryDAO.getPublicSimpleAll(type);
+    public List<LibraryDO> getSimpleAll(Integer type) {
+        return libraryDAO.getSimpleAll(type);
     }
 
     @Override
@@ -278,13 +273,13 @@ public class LibraryServiceImpl implements LibraryService {
 
     @Override
     public void scan() throws FileNotFoundException {
-        List<LibraryDO> libList = getSimpleAll(null, null, null);
+        List<LibraryDO> libList = getSimpleAll(null);
         Set<String> libPathSet = libList.stream().map(LibraryDO::getFilePath).collect(Collectors.toSet());
         List<File> libFiles = FileUtil.scanLibraryFiles();
         List<File> irtLibFiles = FileUtil.scanIrtLibraryFiles();
         for (File file : libFiles) {
             if (!libPathSet.contains(file.getAbsolutePath())) {
-                LibraryDO library = new LibraryDO(file.getName(), LibraryDO.TYPE_STANDARD, vmProperties.getAdminUsername(), file.getAbsolutePath());
+                LibraryDO library = new LibraryDO(file.getName(), LibraryDO.TYPE_STANDARD, file.getAbsolutePath());
                 ResultDO<LibraryDO> resultDO = insert(library);
                 if (resultDO.isFailed()) {
                     logger.error(resultDO.getMsgInfo());
@@ -297,7 +292,7 @@ public class LibraryServiceImpl implements LibraryService {
         }
         for (File file : irtLibFiles) {
             if (!libPathSet.contains(file.getAbsolutePath())) {
-                LibraryDO library = new LibraryDO(file.getName(), LibraryDO.TYPE_IRT, vmProperties.getAdminUsername(), file.getAbsolutePath());
+                LibraryDO library = new LibraryDO(file.getName(), LibraryDO.TYPE_IRT, file.getAbsolutePath());
                 ResultDO resultDO = insert(library);
                 if (resultDO.isFailed()) {
                     logger.error(resultDO.getMsgInfo());

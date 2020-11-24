@@ -30,8 +30,7 @@ public class ExperimentDO extends BaseDO {
     @Indexed
     String projectId;
 
-    @Indexed
-    String ownerName;
+    String creator;
 
     //仪器设备信息
     List<Instrument> instruments;

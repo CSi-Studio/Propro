@@ -19,8 +19,6 @@ public class LibraryQuery extends PageQuery {
     String name;
 
     String creator;
-
-    Boolean doPublic;
     
     //0:标准库,1:iRT校准库
     Integer type;

@@ -56,7 +56,7 @@
                     </td>
                     <td th:text="${project.type}"></td>
                     <td th:text="|${repository}${project.name}|"></td>
-                    <td th:text="${project.ownerName}"></td>
+                    <td th:text="${project.creator}"></td>
                     <td th:text="${project.iRtLibraryName}"></td>
                     <td th:text="${project.libraryName}"></td>
                     <td th:text="${#dates.format(project.createDate,'yyyy-MM-dd HH:mm:ss')}"></td>

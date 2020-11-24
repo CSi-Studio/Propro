@@ -11,7 +11,7 @@ import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 
 import java.util.Locale;
 
-@SpringBootApplication
+@SpringBootApplication()
 @EnableAsync
 public class ProproApplication extends SpringBootServletInitializer {
 
@@ -22,7 +22,7 @@ public class ProproApplication extends SpringBootServletInitializer {
 
     public static void main(String[] args) {
         SpringApplication springApplication = new SpringApplication(ProproApplication.class);
-        springApplication.addListeners(new StartListener());
+//        springApplication.addListeners(new StartListener());
         springApplication.run(args);
     }
 

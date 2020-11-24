@@ -6,7 +6,6 @@ import net.csibio.propro.domain.db.PeptideDO;
 import net.csibio.propro.domain.db.simple.Protein;
 import net.csibio.propro.domain.query.PeptideQuery;
 import net.csibio.propro.service.PeptideService;
-import net.csibio.propro.utils.PermissionUtil;
 import net.csibio.propro.algorithm.formula.FormulaCalculator;
 import net.csibio.propro.algorithm.formula.FragmentFactory;
 import net.csibio.propro.algorithm.decoy.generator.ShuffleGenerator;
@@ -49,7 +48,6 @@ public class PeptideController extends BaseController {
                 @RequestParam(value = "pageSize", required = false, defaultValue = "30") Integer pageSize) {
         long startTime = System.currentTimeMillis();
         LibraryDO temp = libraryService.getById(libraryId);
-        PermissionUtil.check(temp);
 
         model.addAttribute("libraryId", libraryId);
         model.addAttribute("libraryName", temp.getName());
@@ -57,7 +55,7 @@ public class PeptideController extends BaseController {
         model.addAttribute("peptideRef", peptideRef);
         model.addAttribute("pageSize", pageSize);
         model.addAttribute("uniqueFilter", uniqueFilter);
-        model.addAttribute("libraries",getLibraryList(null, true));
+        model.addAttribute("libraries",getLibraryList(null));
         model.addAttribute("sequence",sequence);
 
         PeptideQuery query = new PeptideQuery();
@@ -106,7 +104,6 @@ public class PeptideController extends BaseController {
         long startTime = System.currentTimeMillis();
 
         LibraryDO temp = libraryService.getById(libraryId);
-        PermissionUtil.check(temp);
 
         model.addAttribute("libraryId", libraryId);
         model.addAttribute("pageSize", pageSize);
@@ -137,8 +134,6 @@ public class PeptideController extends BaseController {
         if (resultDO.isSuccess()) {
 
             LibraryDO temp = libraryService.getById(resultDO.getModel().getLibraryId());
-            PermissionUtil.check(temp);
-
             model.addAttribute("peptide", resultDO.getModel());
             return "peptide/detail";
         } else {

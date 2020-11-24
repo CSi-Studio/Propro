@@ -7,7 +7,6 @@ import net.csibio.propro.domain.db.AnalyseOverviewDO;
 import net.csibio.propro.service.AnalyseDataService;
 import net.csibio.propro.service.AnalyseOverviewService;
 import net.csibio.propro.service.ScoreService;
-import net.csibio.propro.utils.PermissionUtil;
 import net.csibio.propro.constants.enums.ResultCode;
 import net.csibio.propro.constants.enums.ScoreType;
 import net.csibio.propro.dao.ConfigDAO;
@@ -93,11 +92,7 @@ public class ScoreController extends BaseController {
             return "redirect:/analyse/overview/list";
         }
 
-        PermissionUtil.check(overviewResult.getModel());
-
         ResultDO<List<AnalyseDataDO>> resultDO = analyseDataService.getList(query);
-
-
         model.addAttribute("overview", overviewResult.getModel());
         model.addAttribute("scores", resultDO.getModel());
         model.addAttribute("scoreTypes", overviewResult.getModel().getScoreTypes());
@@ -124,7 +119,6 @@ public class ScoreController extends BaseController {
         model.addAttribute("isIdentified", isIdentified);
 
         ResultDO<AnalyseOverviewDO> overviewResult = analyseOverviewService.getById(overviewId);
-        PermissionUtil.check(overviewResult.getModel());
 
         AnalyseDataQuery query = new AnalyseDataQuery();
         query.setIsDecoy(false);
@@ -182,7 +176,6 @@ public class ScoreController extends BaseController {
             redirectAttributes.addFlashAttribute(ERROR_MSG, ResultCode.ANALYSE_OVERVIEW_NOT_EXISTED.getMessage());
             return "redirect:/analyse/overview/list";
         }
-        PermissionUtil.check(overviewResult.getModel());
 
         model.addAttribute("scoreTypes", ScoreType.getUsedTypes());
         model.addAttribute("scoreTypeArray", JSONArray.parseArray(JSON.toJSONString(ScoreType.getUsedTypes())));
