@@ -40,11 +40,8 @@ public class ProjectDAO extends BaseDAO<ProjectDO, ProjectQuery>{
         if (projectQuery.getName() != null) {
             query.addCriteria(where("name").is(projectQuery.getName()));
         }
-        if (projectQuery.getOwnerName() != null) {
-            query.addCriteria(where("ownerName").is(projectQuery.getOwnerName()));
-        }
-        if (projectQuery.getDoPublic() != null) {
-            query.addCriteria(where("doPublic").is(projectQuery.getDoPublic()));
+        if (projectQuery.getCreator() != null) {
+            query.addCriteria(where("creator").is(projectQuery.getCreator()));
         }
         return query;
     }

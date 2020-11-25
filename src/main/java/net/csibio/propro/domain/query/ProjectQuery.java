@@ -11,14 +11,14 @@ public class ProjectQuery extends PageQuery {
     String name;
 
     //项目负责人名称
-    String ownerName;
+    String creator;
 
     Boolean doPublic;
 
     public ProjectQuery(){}
 
-    public ProjectQuery(String ownerName){
-        this.ownerName = ownerName;
+    public ProjectQuery(String creator){
+        this.creator = creator;
     }
 
     public ProjectQuery(int pageNo, int pageSize, Sort.Direction direction, String sortColumn){

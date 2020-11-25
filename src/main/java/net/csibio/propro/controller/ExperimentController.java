@@ -165,37 +165,36 @@ public class ExperimentController extends BaseController {
         }
     }
 
-    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    @RequestMapping(value = "update", method = RequestMethod.POST)
     String update(Model model,
                   @RequestParam(value = "id", required = true) String id,
-                  @RequestParam(value = "name") String name,
-                  @RequestParam(value = "type") String type,
-                  @RequestParam(value = "iRtLibraryId") String iRtLibraryId,
-                  @RequestParam(value = "slope") Double slope,
-                  @RequestParam(value = "intercept") Double intercept,
-                  @RequestParam(value = "description") String description,
-                  @RequestParam(value = "projectName") String projectName,
+                  @RequestParam(value = "name", required = false) String name,
+                  @RequestParam(value = "projectId", required = true) String projectId,
+                  @RequestParam(value = "type", required = false) String type,
+                  @RequestParam(value = "iRtLibraryId", required = false) String iRtLibraryId,
+                  @RequestParam(value = "creator", required = false) String creator,
+                  @RequestParam(value = "slope", required = false) Double slope,
+                  @RequestParam(value = "intercept", required = false) Double intercept,
+                  @RequestParam(value = "description", required = false) String description,
                   RedirectAttributes redirectAttributes) {
-
         ResultDO<ExperimentDO> resultDO = experimentService.getById(id);
         if (resultDO.isFailed()) {
             redirectAttributes.addFlashAttribute(ERROR_MSG, resultDO.getMsgInfo());
             return "redirect:/experiment/list";
         }
         ExperimentDO experimentDO = resultDO.getModel();
-
-        ProjectDO project = projectService.getByName(projectName);
+        ProjectDO project = projectService.getById(projectId);
         if (project == null) {
             redirectAttributes.addFlashAttribute(ERROR_MSG, resultDO.getMsgInfo());
             return "redirect:/experiment/list";
         }
 
         experimentDO.setName(name);
-        experimentDO.setType(type);
-        experimentDO.setProjectName(projectName);
-        experimentDO.setProjectId(project.getId());
+        experimentDO.setProjectName(project.getName());
+        experimentDO.setType(project.getType());
         experimentDO.setDescription(description);
         experimentDO.setIRtLibraryId(iRtLibraryId);
+        experimentDO.setCreator(creator);
         IrtResult irtResult = experimentDO.getIrtResult();
         irtResult.setSi(new SlopeIntercept(slope, intercept));
         experimentDO.setIrtResult(irtResult);

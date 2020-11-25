@@ -242,8 +242,8 @@ public class PeptideServiceImpl implements PeptideService {
                 break;
             case DIA_SWATH:
             case SCANNING_SWATH:
-                query.setMzStart((double) mzRange.getStart());
-                query.setMzEnd((double) mzRange.getEnd());
+                query.setMzStart(mzRange.getStart());
+                query.setMzEnd(mzRange.getEnd());
                 break;
             default:
                 break;

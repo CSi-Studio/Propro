@@ -73,11 +73,11 @@
                                 <input type="text" class="form-control m-input" id="type" name="type" readonly
                                        th:value="${experiment?.type}">
                             </div>
-                            <label for="ownerName" class="col-2 col-form-label" th:text="#{label_owner}">
+                            <label for="creator" class="col-2 col-form-label" th:text="#{label_creator}">
                             </label>
                             <div class="col-4">
-                                <input type="text" class="form-control m-input" id="ownerName" name="ownerName"
-                                       readonly th:value="${experiment?.ownerName}">
+                                <input type="text" class="form-control m-input" id="creator" name="creator"
+                                       readonly th:value="${experiment?.creator}">
                             </div>
                         </div>
                         <div class="form-group m-form__group row">
@@ -148,29 +148,29 @@
                             <label for="manufacturer" class="col-2 col-form-label">Manufacturer</label>
                             <div class="col-4">
                                 <input type="text" class="form-control m-input" id="manufacturer" name="manufacturer"
-                                       readonly th:value="${experiment?.instrument?.manufacturer}">
+                                       readonly th:value="${experiment?.instruments[0].manufacturer}">
                             </div>
                             <label for="model" class="col-2 col-form-label">Model</label>
                             <div class="col-4">
                                 <input type="text" class="form-control m-input" id="model" name="model"
-                                       readonly th:value="${experiment?.instrument?.model}">
+                                       readonly th:value="${experiment?.instruments[0].model}">
                             </div>
                         </div>
                         <div class="form-group m-form__group row">
                             <label class="col-2 col-form-label">Source</label>
-                            <div class="col-2" th:each="source:${experiment?.instrument?.source}">
+                            <div class="col-2" th:each="source:${experiment?.instruments[0].source}">
                                 <input type="text" class="form-control m-input" readonly th:value="${source}">
                             </div>
                         </div>
                         <div class="form-group m-form__group row">
                             <label class="col-2 col-form-label">Analyzer</label>
-                            <div class="col-2" th:each="analyzer:${experiment?.instrument?.analyzer}">
+                            <div class="col-2" th:each="analyzer:${experiment?.instruments[0].analyzer}">
                                 <input type="text" class="form-control m-input" readonly th:value="${analyzer}">
                             </div>
                         </div>
                         <div class="form-group m-form__group row">
                             <label class="col-2 col-form-label">Detector</label>
-                            <div class="col-2" th:each="detector:${experiment?.instrument?.detector}">
+                            <div class="col-2" th:each="detector:${experiment?.instruments[0].detector}">
                                 <input type="text" class="form-control m-input" readonly th:value="${detector}">
                             </div>
                         </div>

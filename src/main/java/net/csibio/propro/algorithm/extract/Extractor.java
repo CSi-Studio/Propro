@@ -318,11 +318,10 @@ public class Extractor {
         try {
             long peakCount = 0L;
             int dataCount = 0;
-            swathIndexList = SortUtil.sortSwathIndexByStartPtr(swathIndexList);
             for (SwathIndexDO index : swathIndexList) {
                 long start = System.currentTimeMillis();
 
-                List<AnalyseDataDO> dataList = doExtract(parser, index, overviewDO.getId(), workflowParams);
+                List<AnalyseDataDO> dataList = doExtract(parser, index, workflowParams);
                 if (dataList != null) {
                     for (AnalyseDataDO dataDO : dataList) {
                         peakCount += dataDO.getFeatureScoresList().size();
@@ -350,11 +349,10 @@ public class Extractor {
      * @param parser
      * @param workflowParams
      * @param swathIndex
-     * @param overviewId
      * @return
      * @throws Exception
      */
-    private List<AnalyseDataDO> doExtract(DIAParser parser, SwathIndexDO swathIndex, String overviewId, WorkflowParams workflowParams) throws Exception {
+    private List<AnalyseDataDO> doExtract(DIAParser parser, SwathIndexDO swathIndex, WorkflowParams workflowParams) {
         List<SimplePeptide> coordinates;
         TreeMap<Float, MzIntensityPairs> rtMap;
         //Step2.获取标准库的目标肽段片段的坐标
@@ -382,7 +380,7 @@ public class Extractor {
         //Step3.提取指定原始谱图
         rtMap = parser.getSpectrums(swathIndex.getStartPtr(), swathIndex.getEndPtr(), swathIndex.getRts(), swathIndex.getMzs(), swathIndex.getInts());
 
-        return epps(coordinates, rtMap, overviewId, workflowParams);
+        return epps(coordinates, rtMap, workflowParams);
 
     }
 
@@ -391,18 +389,17 @@ public class Extractor {
      *
      * @param coordinates
      * @param rtMap
-     * @param overviewId
      * @param workflowParams
      * @return
      */
-    private List<AnalyseDataDO> epps(List<SimplePeptide> coordinates, TreeMap<Float, MzIntensityPairs> rtMap, String overviewId, WorkflowParams workflowParams) {
+    private List<AnalyseDataDO> epps(List<SimplePeptide> coordinates, TreeMap<Float, MzIntensityPairs> rtMap, WorkflowParams workflowParams) {
         List<AnalyseDataDO> dataList = Collections.synchronizedList(new ArrayList<>());
         long start = System.currentTimeMillis();
         //传入的coordinates是没有经过排序的,需要排序先处理真实肽段,再处理伪肽段.如果先处理的真肽段没有被提取到任何信息,或者提取后的峰太差被忽略掉,都会同时删掉对应的伪肽段的XIC
         coordinates.forEach(tp -> {
 
             //Step1. 常规提取XIC,XIC结果不进行压缩处理,如果没有提取到任何结果,那么加入忽略列表
-            AnalyseDataDO dataDO = extractForOne(tp, rtMap, workflowParams.getExtractParams(), overviewId);
+            AnalyseDataDO dataDO = extractForOne(tp, rtMap, workflowParams.getExtractParams(), workflowParams.getOverviewId());
             if (dataDO == null) {
                 return;
             }
@@ -419,7 +416,7 @@ public class Extractor {
 
             //Step4. 如果第一,二步均符合条件,那么开始对对应的伪肽段进行数据提取和打分
             tp.setAsDecoy(true);
-            AnalyseDataDO decoyData = extractForOne(tp, rtMap, workflowParams.getExtractParams(), overviewId);
+            AnalyseDataDO decoyData = extractForOne(tp, rtMap, workflowParams.getExtractParams(), workflowParams.getOverviewId());
             if (decoyData == null) {
                 return;
             }

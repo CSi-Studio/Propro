@@ -18,7 +18,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 //				registry.addMapping("/api/**");
         registry.addMapping("/**")
 //                .allowedOrigins("http://wias.oss-cn-shanghai.aliyuncs.com")
-                .allowedOrigins("http://124.71.137.210/")
+                .allowedOrigins("http://124.71.137.210,http://localhost")
                 .allowedHeaders("*")
                 .allowedMethods("GET", "POST", "DELETE", "PUT", "OPTIONS")
                 .allowCredentials(false).maxAge(3600);

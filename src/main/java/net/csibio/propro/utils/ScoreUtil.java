@@ -72,6 +72,7 @@ public class ScoreUtil {
         }
         return normalizedIntensity;
     }
+
     public static List<Double> normalizeSumDouble(List<Double> intensityList, double sum) {
         List<Double> normalizedIntensity = new ArrayList<>();
         for (int i = 0; i < intensityList.size(); i++) {
@@ -79,6 +80,7 @@ public class ScoreUtil {
         }
         return normalizedIntensity;
     }
+
     /**
      * 1) get left and right index corresponding to spectrum
      * 2) get interval intensity sum to intensity
@@ -97,13 +99,15 @@ public class ScoreUtil {
         int leftIndex = ConvolutionUtil.findIndex(spectrumMzArray, left, true);
         int rightIndex = ConvolutionUtil.findIndex(spectrumMzArray, right, false);
 
-        if(leftIndex == -1 || rightIndex == -1){
+        if (leftIndex == -1 || rightIndex == -1) {
             return new IntegrateWindowMzIntensity(false);
         }
+
         for (int index = leftIndex; index <= rightIndex; index++) {
             intensity += spectrumIntArray[index];
             mz += spectrumMzArray[index] * spectrumIntArray[index];
         }
+
         if (intensity > 0f) {
             mz /= intensity;
             mzIntensity.setSignalFound(true);
@@ -118,7 +122,7 @@ public class ScoreUtil {
         return mzIntensity;
     }
 
-    public static List<String> getScoreTypes(HttpServletRequest request){
+    public static List<String> getScoreTypes(HttpServletRequest request) {
         List<String> scoreTypes = new ArrayList<>();
         scoreTypes.add(ScoreType.MainScore.getTypeName());
         scoreTypes.add(ScoreType.WeightedTotalScore.getTypeName());
@@ -132,10 +136,10 @@ public class ScoreUtil {
     }
 
     //test failed
-    public static void weightsMapFilter(HashMap<String,Double> weightsMap){
-        for (String scoreTypeName: weightsMap.keySet()){
+    public static void weightsMapFilter(HashMap<String, Double> weightsMap) {
+        for (String scoreTypeName : weightsMap.keySet()) {
             Boolean biggerIsBetter = ScoreType.getBiggerIsBetter(scoreTypeName);
-            if (biggerIsBetter == null || (biggerIsBetter != weightsMap.get(scoreTypeName) > 0)){
+            if (biggerIsBetter == null || (biggerIsBetter != weightsMap.get(scoreTypeName) > 0)) {
                 weightsMap.put(scoreTypeName, 0d);
             }
         }

@@ -9,9 +9,7 @@
 <!-- end::Body -->
 <body>
 <div class="m-content" layout:fragment="content">
-
     <div class="alert alert-danger" role="alert" th:if="${error_msg}" th:text="${error_msg}"></div>
-
     <div class="row">
         <div class="col-md-6">
             <!--begin::Portlet-->
@@ -25,16 +23,29 @@
                     </div>
                 </div>
                 <!--begin::Form-->
-                <form class="m-form m-form--fit m-form--label-align-right" th:action="@{/experiment/update}">
+                <form class="m-form m-form--fit m-form--label-align-right" th:action="@{/experiment/update}" th:method="post">
                     <div class="m-portlet__body">
+
+                        <div class="form-group m-form__group row">
+                            <label for="id" class="col-2 col-form-label" th:text="#{label_project_id}"></label>
+                            <div class="col-4">
+                                <input type="text" class="form-control m-input" name="projectId" id="projectId"
+                                       th:value="${experiment?.projectId}">
+                            </div>
+                            <label for="id" class="col-2 col-form-label" th:text="#{label_project_name}"></label>
+                            <div class="col-4">
+                                <input type="text" class="form-control m-input" name="projectName" id="projectName"
+                                       th:value="${experiment?.projectName}">
+                            </div>
+                        </div>
+
                         <div class="form-group m-form__group row">
                             <label for="id" class="col-2 col-form-label" th:text="#{label_exp_id}"></label>
                             <div class="col-4">
                                 <input type="text" class="form-control m-input" name="id" id="id" readonly
-                                   th:value="${experiment?.id}">
+                                       th:value="${experiment?.id}">
                             </div>
-                            <label for="name" class="col-2 col-form-label" th:text="#{label_exp_name}">
-                            </label>
+                            <label for="name" class="col-2 col-form-label" th:text="#{label_exp_name}"></label>
                             <div class="col-4">
                                 <input type="text" class="form-control m-input" id="name" name="name" readonly
                                        th:value="${experiment?.name}">
@@ -47,17 +58,19 @@
                                 <input type="text" class="form-control m-input" name="alias" id="alias" readonly
                                        th:value="${experiment?.alias}">
                             </div>
+                            <label for="id" class="col-2 col-form-label" th:text="#{label_creator}"></label>
+                            <div class="col-4">
+                                <input type="text" class="form-control m-input" name="creator" id="creator"
+                                       th:value="${experiment?.creator}">
+                            </div>
                         </div>
-
                         <div class="form-group m-form__group row">
-                            <label for="slope" class="col-2 col-form-label" th:text="#{label_slope}">
-                            </label>
+                            <label for="slope" class="col-2 col-form-label" th:text="#{label_slope}"></label>
                             <div class="col-4">
                                 <input type="text" class="form-control m-input" id="slope" name="slope"
                                        th:value="${experiment?.irtResult?.si?.slope}">
                             </div>
-                            <label for="intercept" class="col-2 col-form-label" th:text="#{label_intercept}">
-                            </label>
+                            <label for="intercept" class="col-2 col-form-label" th:text="#{label_intercept}"></label>
                             <div class="col-4">
                                 <input type="text" class="form-control m-input" id="intercept" name="intercept"
                                        th:value="${experiment?.irtResult?.si?.intercept}">
@@ -69,7 +82,8 @@
                                    th:text="#{label_features}">
                             </label>
                             <div class="col-10">
-                                <textarea type="text" class="form-control m-input" id="features" name="features" rows="3"
+                                <textarea type="text" class="form-control m-input" id="features" name="features"
+                                          rows="3"
                                           th:text="${experiment?.features}"></textarea>
                             </div>
                         </div>
@@ -95,10 +109,7 @@
             <!--end::Portlet-->
         </div>
     </div>
-
 </div>
-
-
 </body>
 
 <!-- end::Body -->
