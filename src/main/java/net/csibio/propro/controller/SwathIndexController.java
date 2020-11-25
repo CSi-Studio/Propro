@@ -8,6 +8,7 @@ import net.csibio.propro.constants.enums.ResultCode;
 import net.csibio.propro.domain.ResultDO;
 import net.csibio.propro.domain.query.SwathIndexQuery;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,11 +36,8 @@ public class SwathIndexController extends BaseController {
     String list(Model model,
                 @RequestParam(value = "expId", required = false) String expId,
                 @RequestParam(value = "msLevel", required = false) Integer msLevel,
-                @RequestParam(value = "mzStart", required = false) Float mzStart,
-                @RequestParam(value = "currentPage", required = false, defaultValue = "1") Integer currentPage,
-                @RequestParam(value = "pageSize", required = false, defaultValue = "30") Integer pageSize) {
+                @RequestParam(value = "mzStart", required = false) Float mzStart) {
         long startTime = System.currentTimeMillis();
-        pageSize = 150;
         model.addAttribute("expId", expId);
         model.addAttribute("msLevel", msLevel);
         model.addAttribute("mzStart", mzStart);
@@ -63,17 +61,16 @@ public class SwathIndexController extends BaseController {
         if(mzStart != null){
             query.setMzStart(mzStart);
         }
+//        query.setOrderBy(Sort.Direction.ASC);
+//        query.setSortColumn("startPtr");
+        List<SwathIndexDO> swathList = swathIndexService.getAll(query);
 
-        query.setPageSize(pageSize);
-        query.setPageNo(currentPage);
-        ResultDO<List<SwathIndexDO>> resultDO = swathIndexService.getList(query);
-
-        model.addAttribute("swathIndexList", resultDO.getModel());
-        model.addAttribute("totalPage", resultDO.getTotalPage());
-        model.addAttribute("currentPage", currentPage);
+        model.addAttribute("swathIndexList", swathList);
+        model.addAttribute("totalPage", 1);
+        model.addAttribute("currentPage", 1);
         StringBuilder builder = new StringBuilder();
         builder.append("本次搜索耗时:").append(System.currentTimeMillis() - startTime).append("毫秒;包含搜索结果总计:")
-                .append(resultDO.getTotalNum()).append("条");
+                .append(swathList.size()).append("条");
         model.addAttribute("searchResult", builder.toString());
         return "swathindex/list";
     }

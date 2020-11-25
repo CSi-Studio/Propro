@@ -68,15 +68,15 @@ public class Extractor {
         }
 
         AnalyseOverviewDO overviewDO = createOverview(workflowParams);
-        RandomAccessFile raf = null;
+        DIAParser parser = null;
         try {
-            DIAParser parser = new DIAParser(AirdScanUtil.getIndexPathByAirdPath(workflowParams.getExperimentDO().getAirdIndexPath()));
+            parser = new DIAParser(workflowParams.getExperimentDO().getAirdIndexPath());
             //核心函数在这里
             extract(parser, overviewDO, workflowParams);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            FileUtil.close(raf);
+            parser.close();
         }
 
         analyseOverviewService.update(overviewDO);
@@ -142,8 +142,9 @@ public class Extractor {
             if (swathIndexDO == null) {
                 return ResultDO.buildError(ResultCode.SWATH_INDEX_NOT_EXISTED);
             }
-            rtMap = (TreeMap<Float, MzIntensityPairs>) parser.getSpectrums(swathIndexDO.getStartPtr(), swathIndexDO.getEndPtr(), swathIndexDO.getRts(), swathIndexDO.getMzs(), swathIndexDO.getInts());
+            rtMap = parser.getSpectrums(swathIndexDO.getStartPtr(), swathIndexDO.getEndPtr(), swathIndexDO.getRts(), swathIndexDO.getMzs(), swathIndexDO.getInts());
         }
+        parser.close();
 
         SimplePeptide tp = new SimplePeptide(peptide);
         Double rt = peptide.getRt();
@@ -250,10 +251,10 @@ public class Extractor {
                 mzEnd = mz + extractParams.getHalfMzWindow();
             }
 
-            Float[] intArray = new Float[rtArray.length];
+            float[] intArray = new float[rtArray.length];
             boolean isAllZero = true;
 
-            //由于本函数极其注重性能,为整个流程最关键的耗时步骤,每提升10毫秒都可以带来巨大的性能提升  --陆妙善
+            //本函数极其注重性能,为整个流程最关键的耗时步骤,每提升10毫秒都可以带来巨大的性能提升  --陆妙善
             if (extractParams.getUseAdaptiveWindow()) {
                 for (int i = 0; i < rtArray.length; i++) {
                     float acc = ConvolutionUtil.adaptiveAccumulation(rtMap.get(rtArray[i]), mz);
@@ -379,7 +380,7 @@ public class Extractor {
             logger.warn("coordinate size != 2,Rang:" + swathIndex.getRange().getStart() + ":" + swathIndex.getRange().getEnd());
         }
         //Step3.提取指定原始谱图
-        rtMap = (TreeMap<Float, MzIntensityPairs>) parser.getSpectrums(swathIndex.getStartPtr(), swathIndex.getEndPtr(), swathIndex.getRts(), swathIndex.getMzs(), swathIndex.getInts());
+        rtMap = parser.getSpectrums(swathIndex.getStartPtr(), swathIndex.getEndPtr(), swathIndex.getRts(), swathIndex.getMzs(), swathIndex.getInts());
 
         return epps(coordinates, rtMap, overviewId, workflowParams);
 
@@ -398,7 +399,7 @@ public class Extractor {
         List<AnalyseDataDO> dataList = Collections.synchronizedList(new ArrayList<>());
         long start = System.currentTimeMillis();
         //传入的coordinates是没有经过排序的,需要排序先处理真实肽段,再处理伪肽段.如果先处理的真肽段没有被提取到任何信息,或者提取后的峰太差被忽略掉,都会同时删掉对应的伪肽段的XIC
-        coordinates.parallelStream().forEach(tp -> {
+        coordinates.forEach(tp -> {
 
             //Step1. 常规提取XIC,XIC结果不进行压缩处理,如果没有提取到任何结果,那么加入忽略列表
             AnalyseDataDO dataDO = extractForOne(tp, rtMap, workflowParams.getExtractParams(), overviewId);

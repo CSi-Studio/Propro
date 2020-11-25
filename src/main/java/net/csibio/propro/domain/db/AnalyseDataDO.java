@@ -102,5 +102,5 @@ public class AnalyseDataDO extends BaseDO {
     //key为cutInfo, value为对应的intensity值,仅在解压缩的时候使用,不存入数据库
     @JSONField(serialize=false)
     @Transient
-    HashMap<String, Float[]> intensityMap = new HashMap<>();
+    HashMap<String, float[]> intensityMap = new HashMap<>();
 }

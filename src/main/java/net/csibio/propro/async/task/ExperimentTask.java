@@ -122,8 +122,10 @@ public class ExperimentTask extends BaseTask {
         ap.setScoreTypes(workflowParams.getScoreTypes());
         ap.setFdr(workflowParams.getFdr());
         FinalResult finalResult = semiSupervise.doSemiSupervise(workflowParams.getOverviewId(), ap);
-        taskDO.addLog("流程执行完毕,总耗时:" + (System.currentTimeMillis() - start) + ",最终识别的肽段数为" + finalResult.getMatchedPeptideCount()+"最终识别的蛋白数目为:"+finalResult.getMatchedProteinCount());
-        taskDO.addLog("Peptide/Protein Rate:"+finalResult.getMatchedPeptideCount()/finalResult.getMatchedProteinCount());
+        taskDO.addLog("流程执行完毕,总耗时:" + (System.currentTimeMillis() - start) + ",最终识别的肽段数为" + finalResult.getMatchedPeptideCount() + "最终识别的蛋白数目为:" + finalResult.getMatchedProteinCount());
+        if (finalResult.getMatchedProteinCount() != null && finalResult.getMatchedProteinCount() != 0) {
+            taskDO.addLog("Peptide/Protein Rate:" + finalResult.getMatchedPeptideCount() / finalResult.getMatchedProteinCount());
+        }
     }
 
     @Async(value = "extractorExecutor")

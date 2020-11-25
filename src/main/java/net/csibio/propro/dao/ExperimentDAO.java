@@ -52,8 +52,8 @@ public class ExperimentDAO extends BaseDAO<ExperimentDO, ExperimentQuery>{
         if (experimentQuery.getType() != null) {
             query.addCriteria(where("type").is(experimentQuery.getType()));
         }
-        if (experimentQuery.getOwnerName() != null) {
-            query.addCriteria(where("ownerName").is(experimentQuery.getOwnerName()));
+        if (experimentQuery.getCreator() != null) {
+            query.addCriteria(where("creator").is(experimentQuery.getCreator()));
         }
         return query;
     }
@@ -81,9 +81,9 @@ public class ExperimentDAO extends BaseDAO<ExperimentDO, ExperimentQuery>{
         return mongoTemplate.find(buildQueryWithoutPage(query), SimpleExperiment.class, CollectionName);
     }
 
-    public List<ExpFileSize> getAllFileSizeList(String ownerName){
+    public List<ExpFileSize> getAllFileSizeList(String creator){
         ExperimentQuery query = new ExperimentQuery();
-        query.setOwnerName(ownerName);
+        query.setCreator(creator);
         return mongoTemplate.find(buildQueryWithoutPage(query), ExpFileSize.class, CollectionName);
     }
 

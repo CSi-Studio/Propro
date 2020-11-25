@@ -22,7 +22,7 @@ public class ExperimentQuery extends PageQuery {
 
     String type;
 
-    String ownerName;
+    String creator;
 
     Date createDate;
 
@@ -30,8 +30,8 @@ public class ExperimentQuery extends PageQuery {
 
     public ExperimentQuery(){}
 
-    public ExperimentQuery(String ownerName){
-        this.ownerName = ownerName;
+    public ExperimentQuery(String creator){
+        this.creator = creator;
     }
 
     public ExperimentQuery(int pageNo, int pageSize, Sort.Direction direction, String sortColumn){

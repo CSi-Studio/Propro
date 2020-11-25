@@ -33,6 +33,7 @@ public class ConvolutionUtilTest extends BaseTest {
         Compressor mzCompressor = experimentDO.fetchCompressor(Compressor.TARGET_MZ);
         DIAParser parser = new DIAParser(experimentDO.getAirdPath(), mzCompressor, experimentDO.fetchCompressor(Compressor.TARGET_INTENSITY), mzCompressor.getPrecision());
         pairs = parser.getSpectrumByRt(swathIndex.getStartPtr(), swathIndex.getRts(), swathIndex.getMzs(), swathIndex.getInts(), 722.14197f);
+        parser.close();
         long start = System.nanoTime();
         float result = ConvolutionUtil.accumulation(pairs, 173.128f, 175.108f);
         System.out.println(result + "-" + (System.nanoTime() - start));

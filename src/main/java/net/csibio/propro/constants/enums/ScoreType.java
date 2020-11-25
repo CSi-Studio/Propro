@@ -1,5 +1,6 @@
 package net.csibio.propro.constants.enums;
 
+import com.google.common.collect.Lists;
 import net.csibio.propro.constants.Constants;
 
 import java.util.ArrayList;
@@ -143,7 +144,7 @@ public enum ScoreType {
 
     public static List<ScoreType> getShownTypes() {
 
-        List<ScoreType> types = Arrays.asList(values());
+        List<ScoreType> types = Lists.newArrayList(values());
         types.remove(ScoreType.WeightedTotalScore);
         types.remove(ScoreType.MainScore);
 //        if(type.equals("1")){

@@ -2,6 +2,7 @@ package net.csibio.propro.dao;
 
 import net.csibio.propro.domain.db.SwathIndexDO;
 import net.csibio.propro.domain.query.SwathIndexQuery;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
@@ -53,6 +54,12 @@ public class SwathIndexDAO extends BaseDAO<SwathIndexDO, SwathIndexQuery>{
         }
 
         return query;
+    }
+
+    public List<SwathIndexDO> getAll(SwathIndexQuery swathIndexQuery) {
+        Query query = buildQueryWithoutPage(swathIndexQuery);
+        query.with(Sort.by(Sort.Direction.ASC, "range.start"));
+        return mongoTemplate.find(query, SwathIndexDO.class, CollectionName);
     }
 
     public List<SwathIndexDO> getAllByExpId(String expId) {

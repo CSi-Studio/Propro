@@ -23,7 +23,8 @@ public class VMProperties {
 
     @PostConstruct
     public void init() {
-        System.out.println(env.getProperty("multiple"));
+        System.out.println("Multiple Threads: " + env.getProperty("multiple"));
+        System.out.println("Repository: " + env.getProperty("repository"));
         RepositoryUtil.repository = repository;
     }
 

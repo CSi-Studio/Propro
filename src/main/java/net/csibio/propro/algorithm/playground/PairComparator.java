@@ -53,7 +53,8 @@ public class PairComparator {
         DIAParser parser = new DIAParser(experimentDO.getAirdPath(), mzCompressor, experimentDO.fetchCompressor(Compressor.TARGET_INTENSITY), mzCompressor.getPrecision());
         //Step1.获取窗口信息.
         SwathIndexDO swathIndexDO = swathIndexService.getSwathIndex(experimentDO.getId(), 700f);
-        TreeMap<Float, MzIntensityPairs> rtMap = (TreeMap<Float, MzIntensityPairs>) parser.getSpectrums(swathIndexDO.getStartPtr(), swathIndexDO.getEndPtr(), swathIndexDO.getRts(), swathIndexDO.getMzs(), swathIndexDO.getInts());
+        TreeMap<Float, MzIntensityPairs> rtMap = parser.getSpectrums(swathIndexDO.getStartPtr(), swathIndexDO.getEndPtr(), swathIndexDO.getRts(), swathIndexDO.getMzs(), swathIndexDO.getInts());
+        parser.close();
         resultDO.setModel(rtMap);
         return resultDO;
     }
