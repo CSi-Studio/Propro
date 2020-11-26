@@ -88,10 +88,14 @@
                             <span class="m-widget24__stats m--font-success" th:text="3"></span>
                             <div class="m--space-5"></div>
                             <div class="m-widget2" style="padding-left: 15px; padding-bottom: 5px;">
-                                <a th:href="@{/task/list}" data-toggle="m-tooltip"
-                                   th:title="#{task_list}"
-                                   class="btn btn-success m-btn m-btn--icon m-btn--icon-only">
-                                    <i class="fa fa-list"></i>
+                                <a th:href="@{/analyse/clinic(onlyLib=true)}" data-toggle="m-tooltip" th:title="#{menu_peptide_clinic}" class="btn btn-success m-btn m-btn--icon m-btn--icon-only">
+                                    <i class="fa flaticon-file"></i>
+                                </a>
+                                <a th:href="@{/peptide/calculator}" data-toggle="m-tooltip" th:title="#{menu_molecular_mass_calculator}" class="btn btn-success m-btn m-btn--icon m-btn--icon-only">
+                                    <i class="fa flaticon-clipboard"></i>
+                                </a>
+                                <a th:href="@{/analyse/overview/select}" th:title="#{menu_cross_comparision}" class="btn btn-success m-btn m-btn--icon m-btn--icon-only">
+                                    <i class="fa flaticon-diagram"></i>
                                 </a>
                             </div>
                         </div>
