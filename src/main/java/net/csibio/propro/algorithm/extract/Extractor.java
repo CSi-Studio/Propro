@@ -68,16 +68,10 @@ public class Extractor {
         }
 
         AnalyseOverviewDO overviewDO = createOverview(workflowParams);
-        DIAParser parser = null;
-        try {
-            parser = new DIAParser(workflowParams.getExperimentDO().getAirdIndexPath());
-            //核心函数在这里
-            extract(parser, overviewDO, workflowParams);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            parser.close();
-        }
+        DIAParser parser = new DIAParser(workflowParams.getExperimentDO().getAirdIndexPath());
+        //核心函数在这里
+        extract(parser, overviewDO, workflowParams);
+        parser.close();
 
         analyseOverviewService.update(overviewDO);
         resultDO.setModel(overviewDO);

@@ -137,7 +137,7 @@ public class ScoreServiceImpl implements ScoreService {
                     || (shapeScore != null && shapeScore < input.getXcorrShapeThreshold()))) {
                 continue;
             }
-            //根据RT时间和前体MZ获取最近的一个原始谱图
+            //根据RT时间和前体m/z获取最近的一个原始谱图
             if (input.isUsedDIAScores()) {
                 MzIntensityPairs mzIntensityPairs = swathIndexService.getNearestSpectrumByRt(rtMap, peakGroupFeature.getApexRt());
                 if (mzIntensityPairs != null) {

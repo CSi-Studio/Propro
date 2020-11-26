@@ -110,6 +110,9 @@ public class AnalyseDataDAO extends BaseDAO<AnalyseDataDO, AnalyseDataQuery> {
     }
 
     public void updateMulti(String overviewId, List<SimpleFeatureScores> simpleFeatureScoresList) {
+        if (simpleFeatureScoresList.size() == 0){
+            return;
+        }
         BulkOperations ops = mongoTemplate.bulkOps(BulkOperations.BulkMode.UNORDERED, AnalyseDataDO.class);
         for (SimpleFeatureScores simpleFeatureScores : simpleFeatureScoresList) {
 

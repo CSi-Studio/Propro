@@ -61,8 +61,6 @@ public class SwathIndexController extends BaseController {
         if(mzStart != null){
             query.setMzStart(mzStart);
         }
-//        query.setOrderBy(Sort.Direction.ASC);
-//        query.setSortColumn("startPtr");
         List<SwathIndexDO> swathList = swathIndexService.getAll(query);
 
         model.addAttribute("swathIndexList", swathList);
@@ -77,11 +75,9 @@ public class SwathIndexController extends BaseController {
 
     @RequestMapping(value = "/detail/{id}")
     String detail(Model model, @PathVariable("id") String id, RedirectAttributes redirectAttributes) {
-        SwathIndexDO swathIndex = swathIndexService.getById(id);
-        if (swathIndex != null) {
-            ResultDO<ExperimentDO> expResult = experimentService.getById(swathIndex.getExpId());
-
-            model.addAttribute("swathIndex", swathIndex);
+        SwathIndexDO index = swathIndexService.getById(id);
+        if (index != null) {
+            model.addAttribute("swathIndex", index);
             return "swathindex/detail";
         } else {
             redirectAttributes.addFlashAttribute(ERROR_MSG, ResultCode.SWATH_INDEX_NOT_EXISTED.getMessage());
