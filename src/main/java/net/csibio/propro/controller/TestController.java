@@ -12,8 +12,10 @@ import net.csibio.propro.dao.AnalyseDataDAO;
 import net.csibio.propro.domain.bean.file.TableFile;
 import net.csibio.propro.domain.bean.score.FeatureScores;
 import net.csibio.propro.domain.db.*;
+import net.csibio.propro.domain.db.simple.SimplePeptide;
 import net.csibio.propro.domain.params.WorkflowParams;
 import net.csibio.propro.domain.query.AnalyseDataQuery;
+import net.csibio.propro.domain.query.PeptideQuery;
 import net.csibio.propro.domain.query.ProjectQuery;
 import net.csibio.propro.service.*;
 import net.csibio.propro.utils.FileUtil;
@@ -72,6 +74,22 @@ public class TestController extends BaseController {
     public static float RT_EXTRACT_WINDOW = 1200f;
     public static float SIGMA = 6.25f;
     public static float SPACING = 0.01f;
+
+    //计算iRT
+    @RequestMapping("library")
+    @ResponseBody
+    Map<Float, List<Double>> buildLibPeptide(Model model, RedirectAttributes redirectAttributes) {
+        List<SimplePeptide> peptideList = peptideService.getSimpleAll(new PeptideQuery("5fc84a41c7040414fa80cb6e"));
+        Map<Float, List<Double>> map = new HashMap<>();
+        peptideList.forEach(peptide->{
+            List<Double> fragmentMzList = new ArrayList<>();
+            peptide.getFragmentMap().entrySet().forEach(entry->{
+                fragmentMzList.add(entry.getValue().getMz());
+            });
+            map.put(peptide.getMz(), fragmentMzList);
+        });
+        return map;
+    }
 
     //计算iRT
     @RequestMapping("testLMS")

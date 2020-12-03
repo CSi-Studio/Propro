@@ -76,6 +76,11 @@ public class PeptideServiceImpl implements PeptideService {
     }
 
     @Override
+    public List<SimplePeptide> getSimpleAll(PeptideQuery query) {
+        return peptideDAO.getSPAll(query, null);
+    }
+
+    @Override
     public Long count(PeptideQuery query) {
         return peptideDAO.count(query);
     }
