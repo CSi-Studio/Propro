@@ -31,8 +31,6 @@ public interface PeptideService {
 
     List<PeptideDO> getAll(PeptideQuery peptideQuery);
 
-    List<SimplePeptide> getAllSimplePeptide(PeptideQuery peptideQuery);
-
     ResultDO insert(PeptideDO peptideDO);
 
     ResultDO update(PeptideDO peptideDO);

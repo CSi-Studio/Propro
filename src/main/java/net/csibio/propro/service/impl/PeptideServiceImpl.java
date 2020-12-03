@@ -98,11 +98,6 @@ public class PeptideServiceImpl implements PeptideService {
     }
 
     @Override
-    public List<SimplePeptide> getAllSimplePeptide(PeptideQuery peptideQuery) {
-        return peptideDAO.getSPAll(peptideQuery, null);
-    }
-
-    @Override
     public ResultDO insert(PeptideDO peptideDO) {
         try {
             peptideDAO.insert(peptideDO);
