@@ -293,8 +293,8 @@ public class Extractor {
     private void extract(DIAParser parser, AnalyseOverviewDO overviewDO, WorkflowParams workflowParams) {
 
         TaskDO task = workflowParams.getTaskDO();
-        //Step1.获取窗口信息.
-        List<WindowRange> rangs = workflowParams.getExperimentDO().getWindowRanges();
+        //Step1.获取窗口信息
+        List<WindowRange> ranges = workflowParams.getExperimentDO().getWindowRanges();
         SwathIndexQuery query = new SwathIndexQuery(workflowParams.getExperimentDO().getId(), 2);
 
         //获取所有MS2的窗口
@@ -306,7 +306,7 @@ public class Extractor {
             workflowParams.setRtRangeMap(rtRangeMap);
         }
 
-        taskService.update(task, "总计有窗口:" + rangs.size() + "个,开始进行MS2 提取XIC计算");
+        taskService.update(task, "总计有窗口:" + ranges.size() + "个,开始进行MS2 提取XIC计算");
         //按窗口开始扫描.如果一共有N个窗口,则一共分N个批次进行XIC提取
         int count = 1;
         try {
@@ -314,7 +314,6 @@ public class Extractor {
             int dataCount = 0;
             for (SwathIndexDO index : swathIndexList) {
                 long start = System.currentTimeMillis();
-
                 List<AnalyseDataDO> dataList = doExtract(parser, index, workflowParams);
                 if (dataList != null) {
                     for (AnalyseDataDO dataDO : dataList) {
@@ -391,7 +390,6 @@ public class Extractor {
         long start = System.currentTimeMillis();
         //传入的coordinates是没有经过排序的,需要排序先处理真实肽段,再处理伪肽段.如果先处理的真肽段没有被提取到任何信息,或者提取后的峰太差被忽略掉,都会同时删掉对应的伪肽段的XIC
         coordinates.forEach(tp -> {
-
             //Step1. 常规提取XIC,XIC结果不进行压缩处理,如果没有提取到任何结果,那么加入忽略列表
             AnalyseDataDO dataDO = extractForOne(tp, rtMap, workflowParams.getExtractParams(), workflowParams.getOverviewId());
             if (dataDO == null) {

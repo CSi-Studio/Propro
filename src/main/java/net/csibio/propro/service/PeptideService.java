@@ -25,13 +25,13 @@ public interface PeptideService {
 
     List<PeptideDO> getAllByLibraryIdAndProteinName(String libraryId, String proteinName);
 
+    List<SimplePeptide> getSimpleAll(PeptideQuery query);
+
     Long count(PeptideQuery query);
 
     ResultDO<List<PeptideDO>> getList(PeptideQuery peptideQuery);
 
     List<PeptideDO> getAll(PeptideQuery peptideQuery);
-
-    List<SimplePeptide> getAllSimplePeptide(PeptideQuery peptideQuery);
 
     ResultDO insert(PeptideDO peptideDO);
 
