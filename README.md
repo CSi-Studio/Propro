@@ -21,7 +21,7 @@ the aird file location is for the MS data files, which is obviously a large spac
 A suggested space rate for database and aird repository is 1:10 <br/>
 
 ## Step2. Confirm the required package
-For Windows user, mark sure you put the following directory under a same directory
+For Windows user, make sure you put the following directory under a same directory
 1. Jre8 directory
 2. mongo-windows-4.4.1 directory
 3. config directory
@@ -64,7 +64,7 @@ start up the mongo server successful. <br/>
 ## Step6: Start ProPro Server
 at last double-click the start-propro.bat to start up the propro server. (If the windows defender ask for firewall permission,please allow the command)
  When you see the log "Started ProproApplication in XXX seconds", that mean you start up the propro server successful.
- Now open your browser(Firefox, Edge or Chrome) with http://localhost.
+ Now open http://localhost on your browser(Firefox, Edge or Chrome).
 
 In fact, if you download the whole package of Windows1.0.0, don't do any change for the properties. Just start up the mongo server and the propro by step5 and step6
 
@@ -100,16 +100,6 @@ https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html <br/>
 Download the proper version match for your Operation System <br/>
 
 # Config
-## Config for MongoDB Data Directory
-Make sure which disk you would set as a database disk. 1TB is better. In the mongodb disk. Create an empty directory called "data", and in the "data" directory, create a directory called "db"
-
-## Config for Java Runtime Environment
-After downloading the JDK1.8, unzip the jdk package to a directory. Better in an SSD disk.
-
-## Config for propro.jar
-jre8\bin\java -Xmx10000M -jar -Dspring.config.location=classpath:/application.properties,customer.properties propro.jar <br/>
-The customer.properties file should in the same directory as propro.jar
-
 ## Config for customer.properties
 ### multiple  
 sample: multiple = 1 <br/>
@@ -125,6 +115,6 @@ Make sure that the target server is in the same local area network and this comp
 sample: repository=E:\\ <br/>
 Required! The aird file location.
 
-# Java VM Params. 
+## Config for Java VM Params. 
  - [Optional]   -Xmx10000M
 
