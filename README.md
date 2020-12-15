@@ -119,3 +119,19 @@ Required! The aird file location.
 ## Config for Java VM Params. 
  - [Optional]   -Xmx10000M
 
+# How to use
+## Step1 Create Project
+In your installation step "Confirm disk location", you would set a directory as the Aird file repository. In the repository,
+You need to create the following subfolders under this repository folder.
+    
+    1. /Library/Irt
+    2. /Library/Standard
+    3. Project1
+    4. Project2
+        ...
+    N. ProjectX
+The "/Library/Irt" folder is used for storing the irt library files. The
+"/Library/Stardand" folder is used for storing the assay library files.
+
+   
+
