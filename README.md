@@ -1,3 +1,7 @@
+# Introduction
+ProPro is an open-source web-based platform for DIA targeted MS data analysis with high performance and rich visual interface.
+You can visit 124.71.137.210 for try.(This is a website just for a try, please do not upload any files to the website).
+
 # How to Install
 ## Download
 You should use the AirdPro client to transfer the vendor files into Aird format.<br/>
@@ -120,18 +124,93 @@ Required! The aird file location.
  - [Optional]   -Xmx10000M
 
 # How to use
-## Step1 Create Project
+## 1. Data Preparing
+## 1.1 Create Repository Folders
 In your installation step "Confirm disk location", you would set a directory as the Aird file repository. In the repository,
 You need to create the following subfolders under this repository folder.
     
     1. /Library/Irt
     2. /Library/Standard
-    3. Project1
-    4. Project2
+    3. /ProjectName1
+    4. /ProjectName2
         ...
-    N. ProjectX
-The "/Library/Irt" folder is used for storing the irt library files. The
-"/Library/Stardand" folder is used for storing the assay library files.
+    N. /ProjectNameX
+The "/Library/Irt" folder is used for storing the irt library files. The "/Library/Stardand" folder is used for storing the assay library files.
+You should put all the ".aird" and ".json" format files into it's related project folder. </br>
+
+## 1.2 Setup Library File and Project File
+Put your irt library file into the /Library/Irt directory
+Put your standard assay library file into the /Library/Standard directory
+Create a project folder with a project name
+Put all the aird files into the project folder
+
+## 2. Model Introduction
+### 2.1 Library Model
+#### 2.1.1 Library Initialization
+You can upload your library file with "Plus" button or Scan all the library files in the repository with "Scan" button
+When scanning or uploading, you can check the progress in the Task model for log information.
+
+#### 2.1.2 Format Supporting
+
+    .tsv
+    .csv
+    .traML
+
+#### 2.1.3 Decoy Generator
+Before or after your uploading, you can select a decoy generator for decoy generation. We provide two method, the default generator method is just a shuffle method.
+Another method called Nick method is a less repetitive pseudo-peptide generation algorithm.
+
+#### 2.1.4 Visualization
+You can see all the information of the library and all the fragments group by peptide with a table in the browser.
+
+## 2.2 Project Model
+### 2.2.1 Create Project
+After you create a project directory under the repository. You can click "Plus" button on the Homepage-Project block. Here you need to create a project with the same name as project folder name.
+
+### 2.2.2 Init Project
+Before you click "Scan" button in the Project List page, you need to make sure that all the aird files have already put into the project folder. Then the system will scan all the aird files and parsing them into the mongo database.
+It will cost you about 1-5 minutes. You can check the progress in the Task Model.
+
+### 2.2.3 Project List
+In the project list page. You can check for every experiment by clicking the Project Name Link to jump to the Experiment Model. Or you can operate under the project list for batch operation.
+You can do two batch operations. 
+1. Batch for the Irt step.
+2. Batch for the whole workflow(Irt, Extract, Peak Picking, Peak Scoring, Semi-Supervise Learning with LDA, Report).
+Analysis will cost a relatively long time(Generally no more than 15 minutes/experiment, depending on the count of fragments and the CPU of the computer). You can check the progress in the Task Model.
+
+### 2.2.4 Report
+You can export the analysis result of every experiment.
+
+### 2.2.4 Analysis Result Visualization
+After analysis. You can check all the analysis result of every peptide. ProPro also provide Irt Result for Quality Control.
+
+## 2.3 Experiment Model
+### 2.3.1 Experiment Detail and Analysis
+Every experiment in the project can be analyzed independently. You can do it in the Experiment List page. User can also see the SWATH window, basic file information in the Experiment Detail page.
+Experiment also support iRT analysis and the whole workflow analysis.
+
+### 2.3.2 Reanalyze
+User can reanalyze the experiment with different parameters. Every analysis result will be saved independently.
+
+## 2.4 Task Model
+The task model is a module for viewing high time-consuming asynchronous operations. Including parsing library file, parsing aird file, irt analysis, whole workflow analysis.
+
+## 2.5 Tools
+### 2.5.1 Peptide Clinic
+This is an integrated tool for viewing Xic results and peak scoring results. Not only the XIC data that has been analyzed, the tool also supports real-time XIC analysis. It provides a variety of peptide fragmentation strategies, 
+so that the researchers can have a targeted view of the identification results of a peptide. This tools is the core tool for experiment analysis result review.
+
+### 2.5.2 Molecular Mass Calculator
+This tool is used for compute m/z for any peptide sequence with specific cut parameters. 
+
+### 2.5.3 Cross Overviews Comparison
+This tool is used for comparison between multiple analysis results. It is used for peptides in experiments of the same project to see the correlation between different experiments.
+
+
+
+    
+
+
 
    
 
